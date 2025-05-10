@@ -42,6 +42,7 @@ use wasabi::uefi::VramTextWriter;
 
 use wasabi::x86::hlt;
 
+
 //type Result<T> = core::result::Result<T, &'static str>;
 
 /*
@@ -199,6 +200,10 @@ fn efi_main(image_handle: EfiHandle, efi_system_table: &EfiSystemTable) {
         );
         */
     writeln!(w, "Hello, Non-UEFI world!").unwrap();
+
+    let cr3 = wasabi::x86::read_cr3();
+    println!("cr3 = {cr3:#p}");
+    hexdump(unsafe {&*cr3});
 
     loop {
         hlt()
