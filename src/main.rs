@@ -2,42 +2,31 @@
 #![no_main]
 #![feature(offset_of)]
 
-//use core::arch::asm;
-// use core::cmp::min;
-// use core::fmt;
 use core::fmt::Write;
-// use core::mem::offset_of;
-// use core::mem::size_of;
 use core::panic::PanicInfo;
-// use core::ptr::null_mut;
 use core::writeln;
-//use core::slice;
 
+use wasabi::executor::block_on; 
+use wasabi::executor::Executor;
+use wasabi::executor::Task;
 use wasabi::graphics::Bitmap;
 use wasabi::graphics::fill_rect;
 use wasabi::graphics::draw_test_pattern;
-//use wasabi::result::Result;
-
 use wasabi::init::init_basic_runtime;
 use wasabi::init::init_paging;
-
 use wasabi::println;
 use wasabi::error;
 use wasabi::info;
 use wasabi::warn;
-
 use wasabi::print::hexdump; 
-
 use wasabi::qemu::exit_qemu;
 use wasabi::qemu::QemuExitCode;
-
 use wasabi::uefi::init_vram;
 use wasabi::uefi::locate_loaded_image_protocol;
 use wasabi::uefi::EfiHandle;
 use wasabi::uefi::EfiMemoryType;
 use wasabi::uefi::EfiSystemTable;
 use wasabi::uefi::VramTextWriter;
-
 use wasabi::x86::flush_tlb;
 use wasabi::x86::hlt;
 use wasabi::x86::init_exceptions;
@@ -117,12 +106,12 @@ fn efi_main(image_handle: EfiHandle, efi_system_table: &EfiSystemTable) {
 
     
 
-    let page_table = read_cr3();
-    unsafe {
-        (*page_table)
-            .create_mapping(0,4096,0, PageAttr::NotPresent)
-            .expect("Failed to unmap page 0");
-    }
+    // let page_table = read_cr3();
+    // unsafe {
+    //     (*page_table)
+    //         .create_mapping(0,4096,0, PageAttr::NotPresent)
+    //         .expect("Failed to unmap page 0");
+    // }
     flush_tlb();
     // info!("Reading from virtual address 0...");
     // #[allow(clippy::zero_ptr)]
@@ -131,9 +120,24 @@ fn efi_main(image_handle: EfiHandle, efi_system_table: &EfiSystemTable) {
     // info!("value_at_zero = {value_at_zero}");
 
 
+    //let result = block_on(async {
+    let task = Task::new(async {
+        info!("Hello from the async world!");
+        Ok(())
+    });
+    // info!("block_on completed! result = {result:?}");
+
+    let mut executor = Executor::new();
+    executor.enqueue(task);
+    Executor::run(executor)
+
+
+
+/*
     loop {
         hlt()
     }
+    */
 }
 
 #[panic_handler]
