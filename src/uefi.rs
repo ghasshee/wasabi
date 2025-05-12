@@ -146,17 +146,17 @@ pub fn locate_loaded_image_protocol(
     image_handle: EfiHandle,
     efi_system_table: &EfiSystemTable,
     )-> Result<&EfiLoadedImageProtocol> {
-    let mut graphic_output_protocol = null_mut::<EfiLoadedImageProtocol>();
+    let mut loaded_image_protocol = null_mut::<EfiLoadedImageProtocol>();
     let status = (efi_system_table.boot_services.handle_protocol)(
         image_handle,
         &EFI_LOADED_IMAGE_PROTOCOL_GUID,
-        &mut graphic_output_protocol as *mut *mut EfiLoadedImageProtocol
+        &mut loaded_image_protocol as *mut *mut EfiLoadedImageProtocol
             as *mut *mut EfiVoid,
     );
     if status != EfiStatus::Success {
         return Err("Failed to locate graphics output protocol");
     }
-    Ok(unsafe {&*graphic_output_protocol })
+    Ok(unsafe {&*loaded_image_protocol })
 }
 
 
