@@ -30,7 +30,14 @@ pub struct EfiBootServicesTable {
         descriptor_size: *mut usize,
         descriptor_version: *mut u32,) -> EfiStatus,
     //_reserved1: [u64; 32],
-    _reserved1: [u64; 21],
+    //_reserved1: [u64; 21],
+    _reserved2: [u64;11],
+    handle_protocol: extern "win64" fn(
+        handle: EfiHandle,
+        protocol: *const EfiGuid,
+        interface: *mut *mut EfiVoid,
+        ) -> EfiStatus,
+    _reserved1: [u64; 9],
     exit_boot_services: extern "win64" fn(image_handle: EfiHandle, map_key: usize) -> EfiStatus,
     _reserved4: [u64; 10],
     locate_protocol: extern "win64" fn(
@@ -78,6 +85,14 @@ struct EfiGuid {
     pub data3: [u8; 8],
 }
 
+const EFI_LOADED_IMAGE_PROTOCOL_GUID: EfiGuid = EfiGuid {
+    data0: 0x5B1B31A1,
+    data1: 0x9562,
+    data2: 0x11d2,
+    data3: [0x8E, 0x3F, 0x00, 0xA0, 0xC9, 0x69, 0x72, 0x3B],
+};
+
+
 #[repr(C)]
 #[derive(Debug)]
 struct EfiGraphicsOutputProtocol<'a> {
@@ -120,6 +135,35 @@ fn locate_graphic_protocol<'a>(efi_system_table: &EfiSystemTable,)
     }
     Ok(unsafe { &*graphic_output_protocol })
 }
+
+pub struct EfiLoadedImageProtocol {
+    _reserved: [u64; 8],
+    pub image_base: u64,
+    pub image_size: u64,
+}
+
+pub fn locate_loaded_image_protocol(
+    image_handle: EfiHandle,
+    efi_system_table: &EfiSystemTable,
+    )-> Result<&EfiLoadedImageProtocol> {
+    let mut graphic_output_protocol = null_mut::<EfiLoadedImageProtocol>();
+    let status = (efi_system_table.boot_services.handle_protocol)(
+        image_handle,
+        &EFI_LOADED_IMAGE_PROTOCOL_GUID,
+        &mut graphic_output_protocol as *mut *mut EfiLoadedImageProtocol
+            as *mut *mut EfiVoid,
+    );
+    if status != EfiStatus::Success {
+        return Err("Failed to locate graphics output protocol");
+    }
+    Ok(unsafe {&*graphic_output_protocol })
+}
+
+
+
+
+
+
 
 #[repr(C)] 
 #[derive(Clone, Copy, PartialEq, Eq, Debug)] 

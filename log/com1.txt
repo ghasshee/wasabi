@@ -4,9 +4,11 @@ BdsDxe: starting Boot0002 "UEFI QEMU HARDDISK QM00001 " from PciRoot(0x0)/Pci(0x
 Booting WasabiOS...
 image_handle: 0x00000000BEC4E498
 efi_system_table: 0x00000000bf9ee018
-[INFO]  src/main.rs:60 : info
-[WARN]  src/main.rs:61 : warn
-[ERROR] src/main.rs:62 : error
+image_base: 0x00000000BE338000
+image_size: 0x000000000006D000
+[INFO]  src/main.rs:63 : info
+[WARN]  src/main.rs:64 : warn
+[ERROR] src/main.rs:65 : error
 00000000: 49 42 49 20 53 59 53 54 46 00 02 00 78 00 00 00 |IBI SYSTF...x...|
 00000010: 8D 13 72 28 00 00 00 00 18 D8 92 BF 00 00 00 00 |..r(............|
 00000020: 00 00 01 00 00 00 00 00 18 CE D8 BE 00 00 00 00 |................|
@@ -602,3 +604,28 @@ Some(L2Table @ 0x00000000bfc03000 {
 }
 )
 None
+[INFO]  src/x86.rs:723: TSS64 created @ 0x13FF8FEA0
+[INFO]  src/x86.rs:808: Loading GDT @ 0x000000013FF8FE40
+[INFO]  src/x86.rs:814: Loading TSS ( selector = 0x18 )
+[INFO]  src/x86.rs:669: Loading IDT: IdtrParameters { limit: 4096, base: 0x13ff8ee20 }
+[INFO]  src/main.rs:112: Exception initialized!
+[ERROR] src/x86.rs:480: Interrupt Info: 
+        {
+            rip: 0x00000000BE349865, CS: 0x0008,
+            rsp: 0x00000000BFEB07D0, SS: 0x0010,
+            rbp: 0x00000000BFEB07D0, 
+
+            rflags:     0x0000000000000002,
+            error_code: 0x0000000000000000,
+
+            rax: 0x0000000000000000, rcx: 0x00000000BFEB0400,
+            rdx: 0x00000000BE369F58, rbx: 0x00000000BE4FB5C8,
+            rax: 0x00000000BE64A018, rdi: 0x00000000BE64A018,
+            r8 : 0x0000000000000001, r9 : 0x00000000BFEB01DE,
+            r10: 0x00000000BFEB05E0, r11: 0x0000000000000001,
+            r12: 0x0000000000000000, r13: 0x0000000000000000,
+            r14: 0x00000000BE4FB518, r15: 0x0000000000000005,
+        }
+[ERROR] src/x86.rs:481: Exception 0x03: 
+[ERROR] src/x86.rs:484: Breakpoint
+[ERROR] src/main.rs:122: PANIC: PanicInfo { payload: Any { .. }, message: Some(fatal exception), location: Location { file: "src/x86.rs", line: 533, col: 5 }, can_unwind: true, force_no_backtrace: false }
