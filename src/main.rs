@@ -69,6 +69,8 @@ fn efi_main(image_handle: EfiHandle, efi_system_table: &EfiSystemTable) {
 
     let mut w = VramTextWriter::new(&mut vram);
 
+    let acpi = efi_system_table.acpi_table().expect("ACPI table not found");
+
     let memory_map = init_basic_runtime(image_handle, efi_system_table);
     let mut total_memory_pages = 0;
     for e in memory_map.iter() {
@@ -124,12 +126,6 @@ fn efi_main(image_handle: EfiHandle, efi_system_table: &EfiSystemTable) {
 
     
 
-    // let page_table = read_cr3();
-    // unsafe {
-    //     (*page_table)
-    //         .create_mapping(0,4096,0, PageAttr::NotPresent)
-    //         .expect("Failed to unmap page 0");
-    // }
     info!("Flushing TLB using CR3...") ;
     writeln!(w, "Flushing TLB using CR3...") ;
     flush_tlb();
@@ -137,14 +133,21 @@ fn efi_main(image_handle: EfiHandle, efi_system_table: &EfiSystemTable) {
     info!("CR0 : {:064b}", read_cr0());
     
 
-    // info!("Reading from virtual address 0...");
-    // #[allow(clippy::zero_ptr)]
-    // #[allow(deref_nullptr)]
-    // let value_at_zero = unsafe { *(0 as *const u8) };
-    // info!("value_at_zero = {value_at_zero}");
 
 
-    let task1 = Task::new(async {
+
+
+    let hpet = acpi.hpet().expect("Failed to get HPET from ACPI");
+    let hpet = hpet
+        .base_address()
+        .expect("Failed to get HPET base address");
+
+    info!("HPET is at {hpet:#018X}");
+
+
+    let task1 = Task::new(async move {
+
+
         for i in 100..=103 {
             info!("{i}");
             yield_execution().await;
