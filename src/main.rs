@@ -7,6 +7,7 @@ use core::panic::PanicInfo;
 use core::writeln;
 
 use wasabi::executor::block_on; 
+use wasabi::executor::yield_execution;
 use wasabi::executor::Executor;
 use wasabi::executor::Task;
 use wasabi::graphics::Bitmap;
@@ -30,7 +31,9 @@ use wasabi::uefi::VramTextWriter;
 use wasabi::x86::flush_tlb;
 use wasabi::x86::hlt;
 use wasabi::x86::init_exceptions;
+use wasabi::x86::read_cr0;
 use wasabi::x86::read_cr3;
+use wasabi::x86::read_cr4; 
 use wasabi::x86::trigger_debug_interrupt;
 use wasabi::x86::PageAttr;
 
@@ -82,6 +85,9 @@ fn efi_main(image_handle: EfiHandle, efi_system_table: &EfiSystemTable) {
 
 
     writeln!(w, "Hello, Non-UEFI world!").unwrap();
+    info!("Hello, Non-UEFI world!"); 
+    writeln!(w, "CR0 : {:064b}", read_cr0());
+    info!("CR0 : {:064b}", read_cr0());
 
     let cr3 = wasabi::x86::read_cr3();
     println!("cr3 = {cr3:#p}");
@@ -101,8 +107,20 @@ fn efi_main(image_handle: EfiHandle, efi_system_table: &EfiSystemTable) {
     info!("Exception initialized!");
     trigger_debug_interrupt();
     info!("Execution continued.");
+
+
+    info!("Just before write to CR3");
+    writeln!(w, "Just before write to CR3");
+    info!("CR0 : {:064b}", read_cr0());
+    writeln!(w, "CR0 : {:064b}", read_cr0());
+
     init_paging(&memory_map);
     info!("Now we are using our own page tables!");
+    writeln!(w, "Now we are using our own page tables!");
+
+    writeln!(w, "CR0 : {:064b}", read_cr0());
+    info!("CR0 : {:064b}", read_cr0());
+    
 
     
 
@@ -112,7 +130,13 @@ fn efi_main(image_handle: EfiHandle, efi_system_table: &EfiSystemTable) {
     //         .create_mapping(0,4096,0, PageAttr::NotPresent)
     //         .expect("Failed to unmap page 0");
     // }
+    info!("Flushing TLB using CR3...") ;
+    writeln!(w, "Flushing TLB using CR3...") ;
     flush_tlb();
+    writeln!(w, "CR0 : {:064b}", read_cr0());
+    info!("CR0 : {:064b}", read_cr0());
+    
+
     // info!("Reading from virtual address 0...");
     // #[allow(clippy::zero_ptr)]
     // #[allow(deref_nullptr)]
@@ -120,15 +144,27 @@ fn efi_main(image_handle: EfiHandle, efi_system_table: &EfiSystemTable) {
     // info!("value_at_zero = {value_at_zero}");
 
 
-    //let result = block_on(async {
-    let task = Task::new(async {
-        info!("Hello from the async world!");
+    let task1 = Task::new(async {
+        for i in 100..=103 {
+            info!("{i}");
+            yield_execution().await;
+        }
         Ok(())
     });
-    // info!("block_on completed! result = {result:?}");
+    let task2 = Task::new(async {
+        for i in 200..=203 {
+            info!("{i}");
+            yield_execution().await;
+        }
+        Ok(())
+    });
+
+
+    info!("CR0 : {:031b}", read_cr0());
 
     let mut executor = Executor::new();
-    executor.enqueue(task);
+    executor.enqueue(task1);
+    executor.enqueue(task2);
     Executor::run(executor)
 
 

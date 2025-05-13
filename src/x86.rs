@@ -41,7 +41,6 @@ pub fn write_io_port_u8(port: u16, data: u8) {
     }
 }
 
-
 pub fn read_cr3() -> *mut PML4 {
     let mut cr3: *mut PML4;
     unsafe {
@@ -50,6 +49,7 @@ pub fn read_cr3() -> *mut PML4 {
     }
     cr3
 }
+
 
 pub const PAGE_SIZE: usize = 4096; 
 const ATTR_MASK         : u64 = 0xFFF;
@@ -478,6 +478,7 @@ extern "sysv64" {
     fn interrupt_entrypoint14();
     fn interrupt_entrypoint32();
 }
+
 
 
 global_asm!(
@@ -964,6 +965,7 @@ pub fn trigger_debug_interrupt() {
 
 
 
+
 #[no_mangle]
 pub unsafe fn write_cr3(table: *const PML4) {
     asm!("mov cr3, rax",
@@ -971,9 +973,91 @@ pub unsafe fn write_cr3(table: *const PML4) {
 }
 
 
-
+#[allow(dead_code)] 
 pub fn flush_tlb() {
     unsafe {
         write_cr3(read_cr3());
     }
 }
+
+
+
+
+
+
+
+
+// For CR0 debug p228~ 
+
+
+
+pub type CR0 = u64;
+pub type CR4 = u64; 
+
+
+pub fn read_cr0() -> CR0 {
+    let mut cr0: u64;
+    unsafe {
+        asm!("mov rax, cr3",
+             out("rax") cr0)
+    }
+    cr0
+}
+
+pub fn read_cr4() -> CR4 {
+    let mut cr4: u64;
+    unsafe {
+        asm!("mov rax, cr4",
+             out("rax") cr4)
+    }
+    cr4
+}
+
+
+/*
+
+
+// This write_cr0 cannot write to cr0 
+#[no_mangle]
+pub unsafe fn write_cr0(cr0: CR0) {
+    asm!("mov cr0, rax",
+         in("rax") cr0)
+}
+
+// This write_cr4 cannot write to cr4
+#[no_mangle]
+pub unsafe fn write_cr4(cr4: CR4) {
+    asm!("mov cr4, rax",
+         in("rax") cr4)
+}
+
+
+pub const pe:u64  = 1; 
+pub const pg:u64  = 1<<31;
+pub const pae:u64 = 1<<5; 
+
+
+fn pae_on() {
+    unsafe {
+        write_cr4(read_cr4()|pae)
+    }
+}
+
+pub fn paging_on () {
+    unsafe{
+        //pae_on(); 
+        //psr_efer_long_mode_on(); 
+        write_cr0(read_cr0()|pg);
+    }
+}
+
+pub fn psr_efer_long_mode_on (){
+    unsafe{ 
+        asm!("mov rcx, 0xC0000080");
+        asm!("rdmsr");
+        asm!("or eax, 1 << 8");
+        asm!("wrmsr")
+    }
+}
+*/
+    
