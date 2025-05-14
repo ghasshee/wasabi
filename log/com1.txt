@@ -4,11 +4,11 @@ BdsDxe: starting Boot0002 "UEFI QEMU HARDDISK QM00001 " from PciRoot(0x0)/Pci(0x
 Booting WasabiOS...
 image_handle: 0x00000000BEC4E498
 efi_system_table: 0x00000000bf9ee018
-image_base: 0x00000000BE313000
-image_size: 0x000000000007F000
-[INFO]  src/main.rs:56 : info
-[WARN]  src/main.rs:57 : warn
-[ERROR] src/main.rs:58 : error
+image_base: 0x00000000BE309000
+image_size: 0x0000000000084000
+[INFO]  src/main.rs:58 : info
+[WARN]  src/main.rs:59 : warn
+[ERROR] src/main.rs:60 : error
 00000000: 49 42 49 20 53 59 53 54 46 00 02 00 78 00 00 00 |IBI SYSTF...x...|
 00000010: 8D 13 72 28 00 00 00 00 18 D8 92 BF 00 00 00 00 |..r(............|
 00000020: 00 00 01 00 00 00 00 00 18 CE D8 BE 00 00 00 00 |................|
@@ -17,8 +17,8 @@ image_size: 0x000000000007F000
 00000050: F0 C0 D1 BE 00 00 00 00 98 EB 9E BF 00 00 00 00 |................|
 00000060: 40 01 ED BF 00 00 00 00 0C 00 00 00 00 00 00 00 |@...............|
 00000070: 98 EC 9E BF 00 00 00 00                         |........|
-[INFO]  src/main.rs:91 : Hello, Non-UEFI world!
-[INFO]  src/main.rs:93 : CR0 : 0000000000000000000000000000000010111111110000000001000000000000
+[INFO]  src/main.rs:93 : Hello, Non-UEFI world!
+[INFO]  src/main.rs:95 : CR0 : 0000000000000000000000000000000010111111110000000001000000000000
 cr3 = 0x00000000bfc01000
 Some(L4Table @ 0x00000000bfc01000 {
   entry[  0] = L4Entry @ 0x00000000bfc01000 { 0x00000000BFC02023 PWS  }
@@ -611,43 +611,43 @@ None
 [INFO]  src/x86.rs:884: Loading GDT @ 0x000000013FF8FE40
 [INFO]  src/x86.rs:890: Loading TSS ( selector = 0x18 )
 [INFO]  src/x86.rs:745: Loading IDT: IdtrParameters { limit: 4096, base: 0x13ff8ee20 }
-[INFO]  src/main.rs:110: Exception initialized!
+[INFO]  src/main.rs:112: Exception initialized!
 [ERROR] src/x86.rs:555: Interrupt Info: 
         {
-            rip: 0x00000000BE329755, CS: 0x0008,
-            rsp: 0x00000000BFEAEC10, SS: 0x0010,
-            rbp: 0x00000000BFEAEC10, 
+            rip: 0x00000000BE31F805, CS: 0x0008,
+            rsp: 0x00000000BFEAEBF0, SS: 0x0010,
+            rbp: 0x00000000BFEAEBF0, 
 
-            rflags:     0x0000000000000002,
+            rflags:     0x0000000000000006,
             error_code: 0x0000000000000000,
 
             rax: 0x0000000000000000, rcx: 0x00000000BFEAE800,
-            rdx: 0x00000000BE35D640, rbx: 0x00000000BE4FB5C8,
+            rdx: 0x00000000BE357680, rbx: 0x00000000BE4FB5C8,
             rax: 0x00000000BE64A018, rdi: 0x00000000BE64A018,
-            r8 : 0x0000000000000001, r9 : 0x00000000BFEAE61E,
-            r10: 0x00000000BFEAEA20, r11: 0x0000000000000001,
+            r8 : 0x0000000000000001, r9 : 0x00000000BFEAE5FE,
+            r10: 0x00000000BFEAEA00, r11: 0x0000000000000001,
             r12: 0x0000000000000000, r13: 0x0000000000000000,
             r14: 0x00000000BE4FB518, r15: 0x0000000000000005,
         }
 [ERROR] src/x86.rs:556: Exception 0x03: 
 [ERROR] src/x86.rs:559: Breakpoint
-[INFO]  src/main.rs:112: Execution continued.
-[INFO]  src/main.rs:115: Just before write to CR3
-[INFO]  src/main.rs:117: CR0 : 0000000000000000000000000000000010111111110000000001000000000000
-[INFO]  src/main.rs:121: Now we are using our own page tables!
-[INFO]  src/main.rs:125: CR0 : 0000000000000000000000000000000100111111111110001101000000000000
-[INFO]  src/main.rs:130: Flushing TLB using CR3...
-[INFO]  src/main.rs:134: CR0 : 0000000000000000000000000000000100111111111110001101000000000000
-[INFO]  src/main.rs:146: HPET is at 0x00000000fed00000
-[INFO]  src/main.rs:169: CR0 : 100111111111110001101000000000000
+[INFO]  src/main.rs:114: Execution continued.
+[INFO]  src/main.rs:117: Just before write to CR3
+[INFO]  src/main.rs:119: CR0 : 0000000000000000000000000000000010111111110000000001000000000000
+[INFO]  src/main.rs:123: Now we are using our own page tables!
+[INFO]  src/main.rs:127: CR0 : 0000000000000000000000000000000100111111111110001101000000000000
+[INFO]  src/main.rs:132: Flushing TLB using CR3...
+[INFO]  src/main.rs:136: CR0 : 0000000000000000000000000000000100111111111110001101000000000000
+[INFO]  src/main.rs:148: HPET is at 0x00000000fed00000
+[INFO]  src/main.rs:171: CR0 : 100111111111110001101000000000000
 [INFO]  src/executor.rs:99 : Executor starts running...
-[INFO]  src/main.rs:155: 100 hpet.main_conter = 662089
-[INFO]  src/main.rs:162: 200 hpet.main_conter = 862138
-[INFO]  src/main.rs:155: 101 hpet.main_conter = 960661
-[INFO]  src/main.rs:162: 201 hpet.main_conter = 1019034
-[INFO]  src/main.rs:155: 102 hpet.main_conter = 1067224
-[INFO]  src/main.rs:162: 202 hpet.main_conter = 1112354
-[INFO]  src/main.rs:155: 103 hpet.main_conter = 1163066
-[INFO]  src/main.rs:162: 203 hpet.main_conter = 1208894
-[INFO]  src/executor.rs:107: Task completed: Task(src/main.rs:151): Ok(())
-[INFO]  src/executor.rs:107: Task completed: Task(src/main.rs:160): Ok(())
+[INFO]  src/main.rs:157: 100 hpet.main_conter = 5.44427ms
+[INFO]  src/main.rs:164: 200 hpet.main_conter = 8.28706ms
+[INFO]  src/main.rs:157: 101 hpet.main_conter = 9.02629ms
+[INFO]  src/main.rs:164: 201 hpet.main_conter = 9.46906ms
+[INFO]  src/main.rs:157: 102 hpet.main_conter = 9.83679ms
+[INFO]  src/main.rs:164: 202 hpet.main_conter = 10.19906ms
+[INFO]  src/main.rs:157: 103 hpet.main_conter = 10.58981ms
+[INFO]  src/main.rs:164: 203 hpet.main_conter = 10.95849ms
+[INFO]  src/executor.rs:107: Task completed: Task(src/main.rs:155): Ok(())
+[INFO]  src/executor.rs:107: Task completed: Task(src/main.rs:162): Ok(())
