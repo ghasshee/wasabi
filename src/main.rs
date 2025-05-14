@@ -16,10 +16,11 @@ use wasabi::graphics::Bitmap;
 use wasabi::graphics::fill_rect;
 use wasabi::graphics::draw_test_pattern;
 use wasabi::hpet::global_timestamp;
-use wasabi::hpet::set_global_hpet;
-use wasabi::hpet::Hpet;
 use wasabi::init::init_basic_runtime;
 use wasabi::init::init_paging;
+use wasabi::init::init_hpet;
+use wasabi::init::init_allocator; 
+use wasabi::init::init_display;
 use wasabi::println;
 use wasabi::error;
 use wasabi::info;
@@ -43,7 +44,6 @@ use wasabi::x86::trigger_debug_interrupt;
 use wasabi::x86::PageAttr;
 
 
-static mut GLOBAL_HPET: Option<Hpet> = None;
 
 
 
@@ -64,12 +64,9 @@ fn efi_main(image_handle: EfiHandle, efi_system_table: &EfiSystemTable) {
 
 
     let mut vram = init_vram(efi_system_table).expect("init_vram failed");
+    init_display(&mut vram); 
 
 
-    let vw = vram.width();
-    let vh = vram.height();
-    fill_rect(&mut vram, 0x000000,  0,  0, vw, vh).expect("fill_rect failed");
-    draw_test_pattern(&mut vram);
 
 
     let mut w = VramTextWriter::new(&mut vram);
@@ -77,43 +74,16 @@ fn efi_main(image_handle: EfiHandle, efi_system_table: &EfiSystemTable) {
     let acpi = efi_system_table.acpi_table().expect("ACPI table not found");
 
     let memory_map = init_basic_runtime(image_handle, efi_system_table);
-    let mut total_memory_pages = 0;
-    for e in memory_map.iter() {
-        if e.memory_type() != EfiMemoryType::CONVENTIONAL_MEMORY {
-            continue;
-        }
-        total_memory_pages += e.number_of_pages(); 
-        writeln!(w, "{e:?}").unwrap();
-    }
-    let total_memory_size_mib = total_memory_pages * 4096 / 1024 / 1024;
-    writeln!(w,
-             "Total: {total_memory_pages} pages = {total_memory_size_mib} MiB"
-             ).unwrap();
-
 
     writeln!(w, "Hello, Non-UEFI world!").unwrap();
     info!("Hello, Non-UEFI world!"); 
     writeln!(w, "CR0 : {:064b}", read_cr0());
     info!("CR0 : {:064b}", read_cr0());
 
-    let cr3 = wasabi::x86::read_cr3();
-    println!("cr3 = {cr3:#p}");
-    // hexdump(unsafe {&*cr3});
-    let t = Some(unsafe { &*cr3 });
-    println!("{t:?}");
-    let t = t.and_then(|t|  t.next_level(0));
-    println!("{t:?}");
-    let t = t.and_then(|t|  t.next_level(0));
-    println!("{t:?}");
-    let t = t.and_then(|t|  t.next_level(0));
-    println!("{t:?}");
-
+    init_allocator(&memory_map); 
 
 
     let (_gdt, _idt) = init_exceptions();
-    info!("Exception initialized!");
-    trigger_debug_interrupt();
-    info!("Execution continued.");
 
 
     info!("Just before write to CR3");
@@ -122,9 +92,9 @@ fn efi_main(image_handle: EfiHandle, efi_system_table: &EfiSystemTable) {
     writeln!(w, "CR0 : {:064b}", read_cr0());
 
     init_paging(&memory_map);
+
     info!("Now we are using our own page tables!");
     writeln!(w, "Now we are using our own page tables!");
-
     writeln!(w, "CR0 : {:064b}", read_cr0());
     info!("CR0 : {:064b}", read_cr0());
     
@@ -140,19 +110,8 @@ fn efi_main(image_handle: EfiHandle, efi_system_table: &EfiSystemTable) {
 
 
 
+    init_hpet(acpi); 
 
-
-    let hpet = acpi.hpet().expect("Failed to get HPET from ACPI");
-    let hpet = hpet
-        .base_address()
-        .expect("Failed to get HPET base address");
-
-    info!("HPET is at {hpet:#p}");
-
-    let hpet = Hpet::new(hpet);
-    //let hpet = unsafe { GLOBAL_HPET.insert(hpet) };
-    //let task1 = Task::new(async {
-    set_global_hpet(hpet);
     let t0 = global_timestamp();
     let task1 = Task::new(async move {
         for i in 100..=103 {
@@ -171,8 +130,6 @@ fn efi_main(image_handle: EfiHandle, efi_system_table: &EfiSystemTable) {
         Ok(())
     });
 
-
-    info!("CR0 : {:031b}", read_cr0());
 
     let mut executor = Executor::new();
     executor.enqueue(task1);
