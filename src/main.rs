@@ -2,19 +2,13 @@
 #![no_main]
 #![feature(offset_of)]
 
-use core::fmt::Write;
 use core::panic::PanicInfo;
 use core::time::Duration;
-use core::writeln;
 
 use wasabi::executor::block_on; 
-use wasabi::executor::yield_execution;
 use wasabi::executor::Executor;
 use wasabi::executor::Task;
 use wasabi::executor::TimeoutFuture;
-use wasabi::graphics::Bitmap;
-use wasabi::graphics::fill_rect;
-use wasabi::graphics::draw_test_pattern;
 use wasabi::hpet::global_timestamp;
 use wasabi::init::init_basic_runtime;
 use wasabi::init::init_paging;
@@ -26,6 +20,7 @@ use wasabi::error;
 use wasabi::info;
 use wasabi::warn;
 use wasabi::print::hexdump; 
+use wasabi::print::set_global_vram;
 use wasabi::qemu::exit_qemu;
 use wasabi::qemu::QemuExitCode;
 use wasabi::uefi::init_vram;
@@ -33,7 +28,6 @@ use wasabi::uefi::locate_loaded_image_protocol;
 use wasabi::uefi::EfiHandle;
 use wasabi::uefi::EfiMemoryType;
 use wasabi::uefi::EfiSystemTable;
-use wasabi::uefi::VramTextWriter;
 use wasabi::x86::flush_tlb;
 use wasabi::x86::hlt;
 use wasabi::x86::init_exceptions;
@@ -69,15 +63,14 @@ fn efi_main(image_handle: EfiHandle, efi_system_table: &EfiSystemTable) {
 
 
 
-    let mut w = VramTextWriter::new(&mut vram);
+    // let mut w = BitmapTextWriter::new(&mut vram);
+    set_global_vram(vram); 
 
     let acpi = efi_system_table.acpi_table().expect("ACPI table not found");
 
     let memory_map = init_basic_runtime(image_handle, efi_system_table);
 
-    writeln!(w, "Hello, Non-UEFI world!").unwrap();
     info!("Hello, Non-UEFI world!"); 
-    writeln!(w, "CR0 : {:064b}", read_cr0());
     info!("CR0 : {:064b}", read_cr0());
 
     init_allocator(&memory_map); 
@@ -87,24 +80,18 @@ fn efi_main(image_handle: EfiHandle, efi_system_table: &EfiSystemTable) {
 
 
     info!("Just before write to CR3");
-    writeln!(w, "Just before write to CR3");
     info!("CR0 : {:064b}", read_cr0());
-    writeln!(w, "CR0 : {:064b}", read_cr0());
 
     init_paging(&memory_map);
 
     info!("Now we are using our own page tables!");
-    writeln!(w, "Now we are using our own page tables!");
-    writeln!(w, "CR0 : {:064b}", read_cr0());
     info!("CR0 : {:064b}", read_cr0());
     
 
     
 
     info!("Flushing TLB using CR3...") ;
-    writeln!(w, "Flushing TLB using CR3...") ;
     flush_tlb();
-    writeln!(w, "CR0 : {:064b}", read_cr0());
     info!("CR0 : {:064b}", read_cr0());
     
 

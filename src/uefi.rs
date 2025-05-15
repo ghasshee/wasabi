@@ -1,8 +1,6 @@
 use crate::acpi::AcpiRsdpStruct;
-use crate::graphics::draw_font_fg;
 use crate::graphics::Bitmap;
 use crate::result::Result;
-use core::fmt;
 use core::mem::offset_of;
 use core::mem::size_of;
 use core::ptr::null_mut;
@@ -301,54 +299,6 @@ impl MemoryMapHolder {
 
 
 
-pub struct VramTextWriter<'a> {
-    vram: &'a mut VramBufferInfo,
-    cursor_x: i64,
-    cursor_y: i64,
-}
-impl<'a> VramTextWriter<'a> {
-    pub fn new(vram: &'a mut VramBufferInfo) -> Self {
-        Self { 
-            vram, 
-            cursor_x: 0,
-            cursor_y: 0,
-        }
-    }
-}
-impl fmt::Write for VramTextWriter<'_> {
-    fn write_str(&mut self, s: &str) -> fmt::Result {
-        //draw_str_fg(self.vram, 0, 0, 0xffffff, s); 
-        for c in s.chars() {
-            if c == '\n' {
-                self.cursor_y +=16;
-                self.cursor_x = 0;
-                continue;
-            }
-            draw_font_fg(self.vram, self.cursor_x, self.cursor_y, 0xffffff, c);
-            self.cursor_x += 8;
-        }
-        Ok(())
-    }
-}
-
-pub fn exit_from_efi_boot_services(
-    image_handle: EfiHandle,
-    efi_system_table: &EfiSystemTable,
-    memory_map: &mut MemoryMapHolder,
-    ) {
-    loop {
-        let status = efi_system_table.boot_services.get_memory_map(memory_map);
-        assert_eq!(status, EfiStatus::Success);
-        let status = (efi_system_table.boot_services.exit_boot_services)(
-            image_handle,
-            memory_map.map_key,
-            );
-        if status == EfiStatus::Success {
-            break;
-        }
-    }
-}
-
 
 #[derive(Clone, Copy)]
 pub struct VramBufferInfo {
@@ -377,5 +327,22 @@ pub fn init_vram(efi_system_table: &EfiSystemTable) -> Result<VramBufferInfo> {
 }
 
 
-
     
+pub fn exit_from_efi_boot_services(
+    image_handle: EfiHandle,
+    efi_system_table: &EfiSystemTable,
+    memory_map: &mut MemoryMapHolder,
+    ) {
+    loop {
+        let status = efi_system_table.boot_services.get_memory_map(memory_map);
+        assert_eq!(status, EfiStatus::Success);
+        let status = (efi_system_table.boot_services.exit_boot_services)(
+            image_handle,
+            memory_map.map_key,
+            );
+        if status == EfiStatus::Success {
+            break;
+        }
+    }
+}
+
