@@ -6,6 +6,8 @@ use core::mem::offset_of;
 use core::mem::size_of;
 use core::ptr::null_mut;
 
+use core::marker::PhantomPinned; 
+
 
 type EfiVoid = u8;
 
@@ -47,7 +49,7 @@ pub struct EfiBootServicesTable {
         protocol: *const EfiGuid,
         registration: *const EfiVoid,
         interface: *mut *mut EfiVoid,) -> EfiStatus,
-    _reserved3: [u64; 6],
+    _pinned: PhantomPinned,
 }
 impl EfiBootServicesTable {
     pub fn get_memory_map(&self, map: &mut MemoryMapHolder) -> EfiStatus {

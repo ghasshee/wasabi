@@ -4,7 +4,7 @@ BdsDxe: starting Boot0002 "UEFI QEMU HARDDISK QM00001 " from PciRoot(0x0)/Pci(0x
 Booting WasabiOS...
 image_handle: 0x00000000BEC4E498
 efi_system_table: 0x00000000bf9ee018
-image_base: 0x00000000BE30E000
+image_base: 0x00000000BE30D000
 image_size: 0x0000000000082000
 00000000: 49 42 49 20 53 59 53 54 46 00 02 00 78 00 00 00 |IBI SYSTF...x...|
 00000010: F8 EB 8B D5 00 00 00 00 18 D8 92 BF 00 00 00 00 |................|
@@ -17,9 +17,9 @@ image_size: 0x0000000000082000
 [INFO]  src/main.rs:87 : Hello, VRAM!
 [INFO]  src/main.rs:91 : Hello, ACPI Table!
 [INFO]  src/init.rs:30 : [DEBUG]: memory_map created
-[INFO]  src/uefi.rs:343: get_memory_map
-[INFO]  src/uefi.rs:348: exit_boot_services DONE
-[INFO]  src/uefi.rs:350: EfiStatus == Success; Just breaking the uefi exit loop
+[INFO]  src/uefi.rs:345: get_memory_map
+[INFO]  src/uefi.rs:350: exit_boot_services DONE
+[INFO]  src/uefi.rs:352: EfiStatus == Success; Just breaking the uefi exit loop
 [INFO]  src/init.rs:36 : [DEBUG]: exit_from_efi_boot_services DONE
 [INFO]  src/init.rs:38 : [DEBUG]: init_with_mmap DONE)
 [INFO]  src/main.rs:95 : Hello, Non-UEFI world!
@@ -29,8 +29,9 @@ image_size: 0x0000000000082000
 [INFO]  src/init.rs:86 : EfiMemoryDescriptor { memory_type: CONVENTIONAL_MEMORY, physical_start: 8421376, virtual_start: 0, number_of_pages: 3, attribute: 15 }
 [INFO]  src/init.rs:86 : EfiMemoryDescriptor { memory_type: CONVENTIONAL_MEMORY, physical_start: 8437760, virtual_start: 0, number_of_pages: 4, attribute: 15 }
 [INFO]  src/init.rs:86 : EfiMemoryDescriptor { memory_type: CONVENTIONAL_MEMORY, physical_start: 22020096, virtual_start: 0, number_of_pages: 764470, attribute: 15 }
-[INFO]  src/init.rs:86 : EfiMemoryDescriptor { memory_type: CONVENTIONAL_MEMORY, physical_start: 3153420288, virtual_start: 0, number_of_pages: 9144, attribute: 15 }
-[INFO]  src/init.rs:86 : EfiMemoryDescriptor { memory_type: CONVENTIONAL_MEMORY, physical_start: 3191406592, virtual_start: 0, number_of_pages: 126, attribute: 15 }
+[INFO]  src/init.rs:86 : EfiMemoryDescriptor { memory_type: CONVENTIONAL_MEMORY, physical_start: 3153420288, virtual_start: 0, number_of_pages: 9143, attribute: 15 }
+[INFO]  src/init.rs:86 : EfiMemoryDescriptor { memory_type: CONVENTIONAL_MEMORY, physical_start: 3191402496, virtual_start: 0, number_of_pages: 126, attribute: 15 }
+[INFO]  src/init.rs:86 : EfiMemoryDescriptor { memory_type: CONVENTIONAL_MEMORY, physical_start: 3192958976, virtual_start: 0, number_of_pages: 1, attribute: 15 }
 [INFO]  src/init.rs:86 : EfiMemoryDescriptor { memory_type: CONVENTIONAL_MEMORY, physical_start: 3194224640, virtual_start: 0, number_of_pages: 2, attribute: 15 }
 [INFO]  src/init.rs:86 : EfiMemoryDescriptor { memory_type: CONVENTIONAL_MEMORY, physical_start: 3194257408, virtual_start: 0, number_of_pages: 2, attribute: 15 }
 [INFO]  src/init.rs:86 : EfiMemoryDescriptor { memory_type: CONVENTIONAL_MEMORY, physical_start: 3219128320, virtual_start: 0, number_of_pages: 154, attribute: 15 }
@@ -48,10 +49,12 @@ image_size: 0x0000000000082000
 [INFO]  src/main.rs:113: CR0 : 0000000000000000000000000000000100111111111110001101000000000000
 [INFO]  src/init.rs:74 : HPET is at 0x00000000fed00000
 [INFO]  src/executor.rs:101: Executor starts running...
-[INFO]  src/main.rs:120: 100 hpet.main_conter = 12.52108ms
-[INFO]  src/main.rs:128: 200 hpet.main_conter = 38.47291ms
+[INFO]  src/main.rs:120: 100 hpet.main_conter = 21.46087ms
+[INFO]  src/main.rs:128: 200 hpet.main_conter = 48.31383ms
 [INFO]  src/main.rs:142: Started to monitor serial port
-[INFO]  src/main.rs:120: 101 hpet.main_conter = 1.03755239s
-[INFO]  src/main.rs:120: 102 hpet.main_conter = 2.04121865s
-[INFO]  src/main.rs:128: 201 hpet.main_conter = 2.04481588s
-[INFO]  src/main.rs:120: 103 hpet.main_conter = 3.0448517s
+[INFO]  src/main.rs:120: 101 hpet.main_conter = 1.04740365s
+[INFO]  src/main.rs:128: 201 hpet.main_conter = 2.05353129s
+[INFO]  src/main.rs:120: 102 hpet.main_conter = 2.08209s
+[INFO]  src/main.rs:120: 103 hpet.main_conter = 3.08730983s
+[INFO]  src/main.rs:128: 202 hpet.main_conter = 4.05689512s
+[INFO]  src/executor.rs:109: Task completed: Task(src/main.rs:118): Ok(())
