@@ -256,7 +256,6 @@ impl FirstFitAllocator {
 #[cfg(test)]
 mod test {
     use super::*;
-    use alloc::vec;
 
     #[test_case]
     fn malloc_iterate_free_and_alloc() {

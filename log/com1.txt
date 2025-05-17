@@ -4,286 +4,50 @@ BdsDxe: starting Boot0002 "UEFI QEMU HARDDISK QM00001 " from PciRoot(0x0)/Pci(0x
 Booting WasabiOS...
 image_handle: 0x00000000BEC4E498
 efi_system_table: 0x00000000bf9ee018
-image_base: 0x00000000BE314000
-image_size: 0x000000000007F000
+image_base: 0x00000000BE311000
+image_size: 0x0000000000080000
 00000000: 49 42 49 20 53 59 53 54 46 00 02 00 78 00 00 00 |IBI SYSTF...x...|
-00000010: 8D 13 72 28 00 00 00 00 18 D8 92 BF 00 00 00 00 |..r(............|
+00000010: F8 EB 8B D5 00 00 00 00 18 D8 92 BF 00 00 00 00 |................|
 00000020: 00 00 01 00 00 00 00 00 18 CE D8 BE 00 00 00 00 |................|
 00000030: 50 C2 D1 BE 00 00 00 00 18 BF D8 BE 00 00 00 00 |P...............|
 00000040: 90 C6 D1 BE 00 00 00 00 18 B3 D8 BE 00 00 00 00 |................|
 00000050: F0 C0 D1 BE 00 00 00 00 98 EB 9E BF 00 00 00 00 |................|
-00000060: 40 01 ED BF 00 00 00 00 0C 00 00 00 00 00 00 00 |@...............|
+00000060: 40 01 ED BF 00 00 00 00 0B 00 00 00 00 00 00 00 |@...............|
 00000070: 98 EC 9E BF 00 00 00 00                         |........|
-[INFO]  src/main.rs:66 : Hello, Non-UEFI world!
-[INFO]  src/main.rs:67 : CR0 : 0000000000000000000000000000000010111111110000000001000000000000
+[INFO]  src/main.rs:87 : Hello, VRAM!
+[INFO]  src/main.rs:93 : Hello, Non-UEFI world!
+[INFO]  src/main.rs:94 : CR0 : 0000000000000000000000000000000010111111110000000001000000000000
 [INFO]  src/init.rs:83 : EfiMemoryDescriptor { memory_type: CONVENTIONAL_MEMORY, physical_start: 4096, virtual_start: 0, number_of_pages: 159, attribute: 15 }
 [INFO]  src/init.rs:83 : EfiMemoryDescriptor { memory_type: CONVENTIONAL_MEMORY, physical_start: 1048576, virtual_start: 0, number_of_pages: 1792, attribute: 15 }
 [INFO]  src/init.rs:83 : EfiMemoryDescriptor { memory_type: CONVENTIONAL_MEMORY, physical_start: 8421376, virtual_start: 0, number_of_pages: 3, attribute: 15 }
 [INFO]  src/init.rs:83 : EfiMemoryDescriptor { memory_type: CONVENTIONAL_MEMORY, physical_start: 8437760, virtual_start: 0, number_of_pages: 4, attribute: 15 }
 [INFO]  src/init.rs:83 : EfiMemoryDescriptor { memory_type: CONVENTIONAL_MEMORY, physical_start: 22020096, virtual_start: 0, number_of_pages: 764470, attribute: 15 }
-[INFO]  src/init.rs:83 : EfiMemoryDescriptor { memory_type: CONVENTIONAL_MEMORY, physical_start: 3153420288, virtual_start: 0, number_of_pages: 9150, attribute: 15 }
-[INFO]  src/init.rs:83 : EfiMemoryDescriptor { memory_type: CONVENTIONAL_MEMORY, physical_start: 3191418880, virtual_start: 0, number_of_pages: 123, attribute: 15 }
+[INFO]  src/init.rs:83 : EfiMemoryDescriptor { memory_type: CONVENTIONAL_MEMORY, physical_start: 3153420288, virtual_start: 0, number_of_pages: 9147, attribute: 15 }
+[INFO]  src/init.rs:83 : EfiMemoryDescriptor { memory_type: CONVENTIONAL_MEMORY, physical_start: 3191410688, virtual_start: 0, number_of_pages: 125, attribute: 15 }
 [INFO]  src/init.rs:83 : EfiMemoryDescriptor { memory_type: CONVENTIONAL_MEMORY, physical_start: 3194224640, virtual_start: 0, number_of_pages: 2, attribute: 15 }
 [INFO]  src/init.rs:83 : EfiMemoryDescriptor { memory_type: CONVENTIONAL_MEMORY, physical_start: 3194257408, virtual_start: 0, number_of_pages: 2, attribute: 15 }
 [INFO]  src/init.rs:83 : EfiMemoryDescriptor { memory_type: CONVENTIONAL_MEMORY, physical_start: 3219128320, virtual_start: 0, number_of_pages: 154, attribute: 15 }
 [INFO]  src/init.rs:83 : EfiMemoryDescriptor { memory_type: CONVENTIONAL_MEMORY, physical_start: 4294967296, virtual_start: 0, number_of_pages: 262144, attribute: 15 }
-[INFO]  src/init.rs:86 : Total: 1038003 pages = 4054 MiB
+[INFO]  src/init.rs:86 : Total: 1038002 pages = 4054 MiB
 [INFO]  src/x86.rs:799: TSS64 created @ 0x13FF8FEA0
 [INFO]  src/x86.rs:884: Loading GDT @ 0x000000013FF8FE40
 [INFO]  src/x86.rs:890: Loading TSS ( selector = 0x18 )
 [INFO]  src/x86.rs:745: Loading IDT: IdtrParameters { limit: 4096, base: 0x13ff8ee20 }
-[INFO]  src/main.rs:73 : Just before write to CR3
-[INFO]  src/main.rs:74 : CR0 : 0000000000000000000000000000000010111111110000000001000000000000
-[INFO]  src/main.rs:78 : Now we are using our own page tables!
-[INFO]  src/main.rs:79 : CR0 : 0000000000000000000000000000000100111111111110001101000000000000
-[INFO]  src/main.rs:82 : Flushing TLB using CR3...
-[INFO]  src/main.rs:84 : CR0 : 0000000000000000000000000000000100111111111110001101000000000000
+[INFO]  src/main.rs:100: Just before write to CR3
+[INFO]  src/main.rs:101: CR0 : 0000000000000000000000000000000010111111110000000001000000000000
+[INFO]  src/main.rs:105: Now we are using our own page tables!
+[INFO]  src/main.rs:106: CR0 : 0000000000000000000000000000000100111111111110001101000000000000
+[INFO]  src/main.rs:109: Flushing TLB using CR3...
+[INFO]  src/main.rs:111: CR0 : 0000000000000000000000000000000100111111111110001101000000000000
 [INFO]  src/init.rs:71 : HPET is at 0x00000000fed00000
 [INFO]  src/executor.rs:101: Executor starts running...
-[INFO]  src/main.rs:91 : 100 hpet.main_conter = 15.38648ms
-[INFO]  src/main.rs:99 : 200 hpet.main_conter = 27.51443ms
-[INFO]  src/main.rs:113: Started to monitor serial port
-[INFO]  src/main.rs:91 : 101 hpet.main_conter = 1.02618921s
-[INFO]  src/main.rs:91 : 102 hpet.main_conter = 2.03292859s
-[INFO]  src/main.rs:99 : 201 hpet.main_conter = 2.04768085s
-[INFO]  src/main.rs:91 : 103 hpet.main_conter = 3.04754512s
-[INFO]  src/main.rs:99 : 202 hpet.main_conter = 4.05472884s
-[INFO]  src/executor.rs:109: Task completed: Task(src/main.rs:89): Ok(())
-[INFO]  src/main.rs:99 : 203 hpet.main_conter = 6.06239263s
-[INFO]  src/main.rs:117: serial input: 0x6C = Some('l')
-[INFO]  src/main.rs:117: serial input: 0x6C = Some('l')
-[INFO]  src/main.rs:117: serial input: 0x6C = Some('l')
-[INFO]  src/executor.rs:109: Task completed: Task(src/main.rs:97): Ok(())
-[INFO]  src/main.rs:117: serial input: 0x6C = Some('l')
-[INFO]  src/main.rs:117: serial input: 0x6C = Some('l')
-[INFO]  src/main.rs:117: serial input: 0x73 = Some('s')
-[INFO]  src/main.rs:117: serial input: 0x75 = Some('u')
-[INFO]  src/main.rs:117: serial input: 0x64 = Some('d')
-[INFO]  src/main.rs:117: serial input: 0x6F = Some('o')
-[INFO]  src/main.rs:117: serial input: 0x20 = Some(' ')
-[INFO]  src/main.rs:117: serial input: 0x76 = Some('v')
-[INFO]  src/main.rs:117: serial input: 0x69 = Some('i')
-[INFO]  src/main.rs:117: serial input: 0x6D = Some('m')
-[INFO]  src/main.rs:117: serial input: 0x20 = Some(' ')
-[INFO]  src/main.rs:117: serial input: 0x2F = Some('/')
-[INFO]  src/main.rs:117: serial input: 0x63 = Some('c')
-[INFO]  src/main.rs:117: serial input: 0x6F = Some('o')
-[INFO]  src/main.rs:117: serial input: 0x6E = Some('n')
-[INFO]  src/main.rs:117: serial input: 0x66 = Some('f')
-[INFO]  src/main.rs:117: serial input: 0x69 = Some('i')
-[INFO]  src/main.rs:117: serial input: 0x67 = Some('g')
-[INFO]  src/main.rs:117: serial input: 0x72 = Some('r')
-[INFO]  src/main.rs:117: serial input: 0x61 = Some('a')
-[INFO]  src/main.rs:117: serial input: 0x74 = Some('t')
-[INFO]  src/main.rs:117: serial input: 0x69 = Some('i')
-[INFO]  src/main.rs:117: serial input: 0x6F = Some('o')
-[INFO]  src/main.rs:117: serial input: 0x6E = Some('n')
-[INFO]  src/main.rs:117: serial input: 0x2E = Some('.')
-[INFO]  src/main.rs:117: serial input: 0x6E = Some('n')
-[INFO]  src/main.rs:117: serial input: 0x69 = Some('i')
-[INFO]  src/main.rs:117: serial input: 0x78 = Some('x')
-[INFO]  src/main.rs:117: serial input: 0x0D = Some('\r')
-[INFO]  src/main.rs:117: serial input: 0x0D = Some('\r')
-[INFO]  src/main.rs:117: serial input: 0x0D = Some('\r')
-[INFO]  src/main.rs:117: serial input: 0x0D = Some('\r')
-[INFO]  src/main.rs:117: serial input: 0x0D = Some('\r')
-[INFO]  src/main.rs:117: serial input: 0x0D = Some('\r')
-[INFO]  src/main.rs:117: serial input: 0x0D = Some('\r')
-[INFO]  src/main.rs:117: serial input: 0x74 = Some('t')
-[INFO]  src/main.rs:117: serial input: 0x68 = Some('h')
-[INFO]  src/main.rs:117: serial input: 0x69 = Some('i')
-[INFO]  src/main.rs:117: serial input: 0x73 = Some('s')
-[INFO]  src/main.rs:117: serial input: 0x20 = Some(' ')
-[INFO]  src/main.rs:117: serial input: 0x0D = Some('\r')
-[INFO]  src/main.rs:117: serial input: 0x69 = Some('i')
-[INFO]  src/main.rs:117: serial input: 0x73 = Some('s')
-[INFO]  src/main.rs:117: serial input: 0x20 = Some(' ')
-[INFO]  src/main.rs:117: serial input: 0x0D = Some('\r')
-[INFO]  src/main.rs:117: serial input: 0x5C = Some('\\')
-[INFO]  src/main.rs:117: serial input: 0x5C = Some('\\')
-[INFO]  src/main.rs:117: serial input: 0x5C = Some('\\')
-[INFO]  src/main.rs:117: serial input: 0x5C = Some('\\')
-[INFO]  src/main.rs:117: serial input: 0x5C = Some('\\')
-[INFO]  src/main.rs:117: serial input: 0x7F = Some('\u{7f}')
-[INFO]  src/main.rs:117: serial input: 0x7F = Some('\u{7f}')
-[INFO]  src/main.rs:117: serial input: 0x7F = Some('\u{7f}')
-[INFO]  src/main.rs:117: serial input: 0x7F = Some('\u{7f}')
-[INFO]  src/main.rs:117: serial input: 0x7F = Some('\u{7f}')
-[INFO]  src/main.rs:117: serial input: 0x7F = Some('\u{7f}')
-[INFO]  src/main.rs:117: serial input: 0x7F = Some('\u{7f}')
-[INFO]  src/main.rs:117: serial input: 0x3D = Some('=')
-[INFO]  src/main.rs:117: serial input: 0x3D = Some('=')
-[INFO]  src/main.rs:117: serial input: 0x2D = Some('-')
-[INFO]  src/main.rs:117: serial input: 0x2D = Some('-')
-[INFO]  src/main.rs:117: serial input: 0x2F = Some('/')
-[INFO]  src/main.rs:117: serial input: 0x2F = Some('/')
-[INFO]  src/main.rs:117: serial input: 0x2E = Some('.')
-[INFO]  src/main.rs:117: serial input: 0x41 = Some('A')
-[INFO]  src/main.rs:117: serial input: 0x41 = Some('A')
-[INFO]  src/main.rs:117: serial input: 0x41 = Some('A')
-[INFO]  src/main.rs:117: serial input: 0x41 = Some('A')
-[INFO]  src/main.rs:117: serial input: 0x41 = Some('A')
-[INFO]  src/main.rs:117: serial input: 0x41 = Some('A')
-[INFO]  src/main.rs:117: serial input: 0x41 = Some('A')
-[INFO]  src/main.rs:117: serial input: 0x41 = Some('A')
-[INFO]  src/main.rs:117: serial input: 0x41 = Some('A')
-[INFO]  src/main.rs:117: serial input: 0x41 = Some('A')
-[INFO]  src/main.rs:117: serial input: 0x41 = Some('A')
-[INFO]  src/main.rs:117: serial input: 0x41 = Some('A')
-[INFO]  src/main.rs:117: serial input: 0x41 = Some('A')
-[INFO]  src/main.rs:117: serial input: 0x41 = Some('A')
-[INFO]  src/main.rs:117: serial input: 0x41 = Some('A')
-[INFO]  src/main.rs:117: serial input: 0x41 = Some('A')
-[INFO]  src/main.rs:117: serial input: 0x54 = Some('T')
-[INFO]  src/main.rs:117: serial input: 0x48 = Some('H')
-[INFO]  src/main.rs:117: serial input: 0x49 = Some('I')
-[INFO]  src/main.rs:117: serial input: 0x54 = Some('T')
-[INFO]  src/main.rs:117: serial input: 0x48 = Some('H')
-[INFO]  src/main.rs:117: serial input: 0x49 = Some('I')
-[INFO]  src/main.rs:117: serial input: 0x53 = Some('S')
-[INFO]  src/main.rs:117: serial input: 0x20 = Some(' ')
-[INFO]  src/main.rs:117: serial input: 0x73 = Some('s')
-[INFO]  src/main.rs:117: serial input: 0x6A = Some('j')
-[INFO]  src/main.rs:117: serial input: 0x64 = Some('d')
-[INFO]  src/main.rs:117: serial input: 0x6B = Some('k')
-[INFO]  src/main.rs:117: serial input: 0x61 = Some('a')
-[INFO]  src/main.rs:117: serial input: 0x73 = Some('s')
-[INFO]  src/main.rs:117: serial input: 0x3B = Some(';')
-[INFO]  src/main.rs:117: serial input: 0x66 = Some('f')
-[INFO]  src/main.rs:117: serial input: 0x6A = Some('j')
-[INFO]  src/main.rs:117: serial input: 0x61 = Some('a')
-[INFO]  src/main.rs:117: serial input: 0x6B = Some('k')
-[INFO]  src/main.rs:117: serial input: 0x3B = Some(';')
-[INFO]  src/main.rs:117: serial input: 0x26 = Some('&')
-[INFO]  src/main.rs:117: serial input: 0x23 = Some('#')
-[INFO]  src/main.rs:117: serial input: 0x5E = Some('^')
-[INFO]  src/main.rs:117: serial input: 0x24 = Some('$')
-[INFO]  src/main.rs:117: serial input: 0x26 = Some('&')
-[INFO]  src/main.rs:117: serial input: 0x28 = Some('(')
-[INFO]  src/main.rs:117: serial input: 0x5E = Some('^')
-[INFO]  src/main.rs:117: serial input: 0x26 = Some('&')
-[INFO]  src/main.rs:117: serial input: 0x23 = Some('#')
-[INFO]  src/main.rs:117: serial input: 0x2A = Some('*')
-[INFO]  src/main.rs:117: serial input: 0x51 = Some('Q')
-[INFO]  src/main.rs:117: serial input: 0x28 = Some('(')
-[INFO]  src/main.rs:117: serial input: 0x5E = Some('^')
-[INFO]  src/main.rs:117: serial input: 0x26 = Some('&')
-[INFO]  src/main.rs:117: serial input: 0x2A = Some('*')
-[INFO]  src/main.rs:117: serial input: 0x28 = Some('(')
-[INFO]  src/main.rs:117: serial input: 0x28 = Some('(')
-[INFO]  src/main.rs:117: serial input: 0x29 = Some(')')
-[INFO]  src/main.rs:117: serial input: 0x28 = Some('(')
-[INFO]  src/main.rs:117: serial input: 0x29 = Some(')')
-[INFO]  src/main.rs:117: serial input: 0x28 = Some('(')
-[INFO]  src/main.rs:117: serial input: 0x28 = Some('(')
-[INFO]  src/main.rs:117: serial input: 0x29 = Some(')')
-[INFO]  src/main.rs:117: serial input: 0x28 = Some('(')
-[INFO]  src/main.rs:117: serial input: 0x2A = Some('*')
-[INFO]  src/main.rs:117: serial input: 0x28 = Some('(')
-[INFO]  src/main.rs:117: serial input: 0x2A = Some('*')
-[INFO]  src/main.rs:117: serial input: 0x28 = Some('(')
-[INFO]  src/main.rs:117: serial input: 0x2A = Some('*')
-[INFO]  src/main.rs:117: serial input: 0x28 = Some('(')
-[INFO]  src/main.rs:117: serial input: 0x2A = Some('*')
-[INFO]  src/main.rs:117: serial input: 0x28 = Some('(')
-[INFO]  src/main.rs:117: serial input: 0x26 = Some('&')
-[INFO]  src/main.rs:117: serial input: 0x2A = Some('*')
-[INFO]  src/main.rs:117: serial input: 0x26 = Some('&')
-[INFO]  src/main.rs:117: serial input: 0x2A = Some('*')
-[INFO]  src/main.rs:117: serial input: 0x26 = Some('&')
-[INFO]  src/main.rs:117: serial input: 0x5E = Some('^')
-[INFO]  src/main.rs:117: serial input: 0x26 = Some('&')
-[INFO]  src/main.rs:117: serial input: 0x5E = Some('^')
-[INFO]  src/main.rs:117: serial input: 0x26 = Some('&')
-[INFO]  src/main.rs:117: serial input: 0x25 = Some('%')
-[INFO]  src/main.rs:117: serial input: 0x5E = Some('^')
-[INFO]  src/main.rs:117: serial input: 0x25 = Some('%')
-[INFO]  src/main.rs:117: serial input: 0x5E = Some('^')
-[INFO]  src/main.rs:117: serial input: 0x24 = Some('$')
-[INFO]  src/main.rs:117: serial input: 0x25 = Some('%')
-[INFO]  src/main.rs:117: serial input: 0x7E = Some('~')
-[INFO]  src/main.rs:117: serial input: 0x21 = Some('!')
-[INFO]  src/main.rs:117: serial input: 0x40 = Some('@')
-[INFO]  src/main.rs:117: serial input: 0x23 = Some('#')
-[INFO]  src/main.rs:117: serial input: 0x7E = Some('~')
-[INFO]  src/main.rs:117: serial input: 0x21 = Some('!')
-[INFO]  src/main.rs:117: serial input: 0x40 = Some('@')
-[INFO]  src/main.rs:117: serial input: 0x23 = Some('#')
-[INFO]  src/main.rs:117: serial input: 0x7E = Some('~')
-[INFO]  src/main.rs:117: serial input: 0x21 = Some('!')
-[INFO]  src/main.rs:117: serial input: 0x40 = Some('@')
-[INFO]  src/main.rs:117: serial input: 0x23 = Some('#')
-[INFO]  src/main.rs:117: serial input: 0x7E = Some('~')
-[INFO]  src/main.rs:117: serial input: 0x21 = Some('!')
-[INFO]  src/main.rs:117: serial input: 0x40 = Some('@')
-[INFO]  src/main.rs:117: serial input: 0x23 = Some('#')
-[INFO]  src/main.rs:117: serial input: 0x21 = Some('!')
-[INFO]  src/main.rs:117: serial input: 0x40 = Some('@')
-[INFO]  src/main.rs:117: serial input: 0x23 = Some('#')
-[INFO]  src/main.rs:117: serial input: 0x7E = Some('~')
-[INFO]  src/main.rs:117: serial input: 0x21 = Some('!')
-[INFO]  src/main.rs:117: serial input: 0x40 = Some('@')
-[INFO]  src/main.rs:117: serial input: 0x23 = Some('#')
-[INFO]  src/main.rs:117: serial input: 0x7E = Some('~')
-[INFO]  src/main.rs:117: serial input: 0x21 = Some('!')
-[INFO]  src/main.rs:117: serial input: 0x40 = Some('@')
-[INFO]  src/main.rs:117: serial input: 0x23 = Some('#')
-[INFO]  src/main.rs:117: serial input: 0x23 = Some('#')
-[INFO]  src/main.rs:117: serial input: 0x24 = Some('$')
-[INFO]  src/main.rs:117: serial input: 0x25 = Some('%')
-[INFO]  src/main.rs:117: serial input: 0x5E = Some('^')
-[INFO]  src/main.rs:117: serial input: 0x23 = Some('#')
-[INFO]  src/main.rs:117: serial input: 0x24 = Some('$')
-[INFO]  src/main.rs:117: serial input: 0x25 = Some('%')
-[INFO]  src/main.rs:117: serial input: 0x23 = Some('#')
-[INFO]  src/main.rs:117: serial input: 0x24 = Some('$')
-[INFO]  src/main.rs:117: serial input: 0x25 = Some('%')
-[INFO]  src/main.rs:117: serial input: 0x5E = Some('^')
-[INFO]  src/main.rs:117: serial input: 0x25 = Some('%')
-[INFO]  src/main.rs:117: serial input: 0x5E = Some('^')
-[INFO]  src/main.rs:117: serial input: 0x26 = Some('&')
-[INFO]  src/main.rs:117: serial input: 0x2A = Some('*')
-[INFO]  src/main.rs:117: serial input: 0x25 = Some('%')
-[INFO]  src/main.rs:117: serial input: 0x5E = Some('^')
-[INFO]  src/main.rs:117: serial input: 0x26 = Some('&')
-[INFO]  src/main.rs:117: serial input: 0x2A = Some('*')
-[INFO]  src/main.rs:117: serial input: 0x26 = Some('&')
-[INFO]  src/main.rs:117: serial input: 0x2A = Some('*')
-[INFO]  src/main.rs:117: serial input: 0x28 = Some('(')
-[INFO]  src/main.rs:117: serial input: 0x26 = Some('&')
-[INFO]  src/main.rs:117: serial input: 0x29 = Some(')')
-[INFO]  src/main.rs:117: serial input: 0x26 = Some('&')
-[INFO]  src/main.rs:117: serial input: 0x2A = Some('*')
-[INFO]  src/main.rs:117: serial input: 0x28 = Some('(')
-[INFO]  src/main.rs:117: serial input: 0x29 = Some(')')
-[INFO]  src/main.rs:117: serial input: 0x26 = Some('&')
-[INFO]  src/main.rs:117: serial input: 0x28 = Some('(')
-[INFO]  src/main.rs:117: serial input: 0x29 = Some(')')
-[INFO]  src/main.rs:117: serial input: 0x28 = Some('(')
-[INFO]  src/main.rs:117: serial input: 0x30 = Some('0')
-[INFO]  src/main.rs:117: serial input: 0x3D = Some('=')
-[INFO]  src/main.rs:117: serial input: 0x39 = Some('9')
-[INFO]  src/main.rs:117: serial input: 0x30 = Some('0')
-[INFO]  src/main.rs:117: serial input: 0x2D = Some('-')
-[INFO]  src/main.rs:117: serial input: 0x0D = Some('\r')
-[INFO]  src/main.rs:117: serial input: 0x0D = Some('\r')
-[INFO]  src/main.rs:117: serial input: 0x61 = Some('a')
-[INFO]  src/main.rs:117: serial input: 0x6A = Some('j')
-[INFO]  src/main.rs:117: serial input: 0x64 = Some('d')
-[INFO]  src/main.rs:117: serial input: 0x6B = Some('k')
-[INFO]  src/main.rs:117: serial input: 0x6C = Some('l')
-[INFO]  src/main.rs:117: serial input: 0x61 = Some('a')
-[INFO]  src/main.rs:117: serial input: 0x64 = Some('d')
-[INFO]  src/main.rs:117: serial input: 0x66 = Some('f')
-[INFO]  src/main.rs:117: serial input: 0x6A = Some('j')
-[INFO]  src/main.rs:117: serial input: 0x6B = Some('k')
-[INFO]  src/main.rs:117: serial input: 0x73 = Some('s')
-[INFO]  src/main.rs:117: serial input: 0x3B = Some(';')
-[INFO]  src/main.rs:117: serial input: 0x6A = Some('j')
-[INFO]  src/main.rs:117: serial input: 0x6B = Some('k')
-[INFO]  src/main.rs:117: serial input: 0x6C = Some('l')
-[INFO]  src/main.rs:117: serial input: 0x3B = Some(';')
-[INFO]  src/main.rs:117: serial input: 0x0D = Some('\r')
-[INFO]  src/main.rs:117: serial input: 0x0D = Some('\r')
-[INFO]  src/main.rs:117: serial input: 0x0D = Some('\r')
-[INFO]  src/main.rs:117: serial input: 0x0D = Some('\r')
+[INFO]  src/main.rs:118: 100 hpet.main_conter = 16.70791ms
+[INFO]  src/main.rs:126: 200 hpet.main_conter = 21.99724ms
+[INFO]  src/main.rs:140: Started to monitor serial port
+[INFO]  src/main.rs:118: 101 hpet.main_conter = 1.0216114s
+[INFO]  src/main.rs:118: 102 hpet.main_conter = 2.02375683s
+[INFO]  src/main.rs:126: 201 hpet.main_conter = 2.03725508s
+[INFO]  src/main.rs:118: 103 hpet.main_conter = 3.02604162s
+[INFO]  src/executor.rs:109: Task completed: Task(src/main.rs:116): Ok(())
+[INFO]  src/main.rs:126: 202 hpet.main_conter = 4.05634465s
+[INFO]  src/main.rs:126: 203 hpet.main_conter = 6.05865742s

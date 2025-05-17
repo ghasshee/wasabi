@@ -5,7 +5,6 @@
 use core::panic::PanicInfo;
 use core::time::Duration;
 
-use wasabi::executor::block_on; 
 use wasabi::executor::Executor;
 use wasabi::executor::Task;
 use wasabi::executor::TimeoutFuture;
@@ -18,7 +17,6 @@ use wasabi::init::init_display;
 use wasabi::println;
 use wasabi::error;
 use wasabi::info;
-use wasabi::warn;
 use wasabi::print::hexdump; 
 use wasabi::print::set_global_vram;
 use wasabi::qemu::exit_qemu;
@@ -27,18 +25,13 @@ use wasabi::serial::SerialPort;
 use wasabi::uefi::init_vram;
 use wasabi::uefi::locate_loaded_image_protocol;
 use wasabi::uefi::EfiHandle;
-use wasabi::uefi::EfiMemoryType;
 use wasabi::uefi::EfiSystemTable;
 use wasabi::x86::flush_tlb;
-use wasabi::x86::hlt;
 use wasabi::x86::init_exceptions;
 use wasabi::x86::read_cr0;
-use wasabi::x86::read_cr3;
-use wasabi::x86::read_cr4; 
-use wasabi::x86::trigger_debug_interrupt;
-use wasabi::x86::PageAttr;
 
 
+use wasabi::graphics::draw_point;
 
 
 
@@ -55,9 +48,43 @@ fn efi_main(image_handle: EfiHandle, efi_system_table: &EfiSystemTable) {
     hexdump(efi_system_table);
 
     let mut vram = init_vram(efi_system_table).expect("init_vram failed");
+
     init_display(&mut vram); 
 
+
+    let font_a = "
+........
+...**...
+...**...
+...**...
+...**...
+..*..*..
+..*..*..
+..*..*..
+..*..*..
+..*..*..
+.******.
+.*....*.
+.*....*.
+.*....*.
+***..***
+........
+........
+";
+    for (y,row) in font_a.trim().split('\n').enumerate() {
+        for (x,pixel) in row.chars().enumerate() {
+            let color = match pixel {
+                '*' => 0xffffff,
+                _   => continue,
+            };
+            let _ = draw_point(&mut vram, color, x as i64, y as i64);
+        }
+    }
+
+
+
     set_global_vram(vram); 
+    info!("Hello, VRAM!");
 
     let acpi = efi_system_table.acpi_table().expect("ACPI table not found");
 
