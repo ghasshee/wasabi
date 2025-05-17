@@ -38,9 +38,10 @@ echo "before writing to $DISK, zeroing the $DISK"
 sudo dd if=/dev/zero of=$DISK count=100000 bs=512
 
 echo "writing disk.img to $DISK" 
-sudo dd if=./disk.img of=$DISK bs=512M
+sudo dd if=./disk.img of=$DISK 
 
 echo "mounting ${DISK}1 to /mnt" 
+
 sudo mount "${DISK}1" /mnt
 
 tree /mnt > /dev/stdout 
@@ -63,7 +64,7 @@ echo "we umounted /mnt"
 
 tree /mnt > /dev/stdout
 
-
+[ -e /mnt/EFI ] && sudo rm -rf /mnt/EFI
 
 
 

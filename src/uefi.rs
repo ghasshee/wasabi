@@ -1,12 +1,14 @@
 use crate::acpi::AcpiRsdpStruct;
 use crate::graphics::Bitmap;
 use crate::result::Result;
+use crate::info;
 use core::mem::offset_of;
 use core::mem::size_of;
 use core::ptr::null_mut;
 
 
 type EfiVoid = u8;
+
 pub type EfiHandle = u64;
 
 
@@ -37,12 +39,15 @@ pub struct EfiBootServicesTable {
         interface: *mut *mut EfiVoid,
         ) -> EfiStatus,
     _reserved1: [u64; 9],
-    exit_boot_services: extern "win64" fn(image_handle: EfiHandle, map_key: usize) -> EfiStatus,
+    exit_boot_services: extern "win64" fn(
+        image_handle: EfiHandle, 
+        map_key: usize) -> EfiStatus,
     _reserved4: [u64; 10],
     locate_protocol: extern "win64" fn(
         protocol: *const EfiGuid,
         registration: *const EfiVoid,
         interface: *mut *mut EfiVoid,) -> EfiStatus,
+    _reserved3: [u64; 6],
 }
 impl EfiBootServicesTable {
     pub fn get_memory_map(&self, map: &mut MemoryMapHolder) -> EfiStatus {
@@ -67,7 +72,6 @@ pub struct EfiConfigurationTable {
     vendor_guid: EfiGuid,
     pub vendor_table: *const u8,
 }
-
 
 
 #[repr(C)]
@@ -336,11 +340,14 @@ pub fn exit_from_efi_boot_services(
     loop {
         let status = efi_system_table.boot_services.get_memory_map(memory_map);
         assert_eq!(status, EfiStatus::Success);
+        info!("get_memory_map" ); 
         let status = (efi_system_table.boot_services.exit_boot_services)(
             image_handle,
             memory_map.map_key,
             );
+        info!("exit_boot_services DONE");
         if status == EfiStatus::Success {
+            info!("EfiStatus == Success; Just breaking the uefi exit loop"); 
             break;
         }
     }

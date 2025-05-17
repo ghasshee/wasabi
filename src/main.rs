@@ -88,6 +88,8 @@ fn efi_main(image_handle: EfiHandle, efi_system_table: &EfiSystemTable) {
 
     let acpi = efi_system_table.acpi_table().expect("ACPI table not found");
 
+    info!("Hello, ACPI Table!"); 
+
     let memory_map = init_basic_runtime(image_handle, efi_system_table);
 
     info!("Hello, Non-UEFI world!"); 
