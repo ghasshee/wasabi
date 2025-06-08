@@ -67,4 +67,5 @@ tree /mnt > /dev/stdout
 [ -e /mnt/EFI ] && sudo rm -rf /mnt/EFI
 
 
-
+echo "removing disk image .." 
+sudo rm disk.img

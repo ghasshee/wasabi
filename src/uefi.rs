@@ -1,17 +1,60 @@
+extern crate alloc;
+
+
+use crate::error::Error;
+use crate::error::Result;
 use crate::acpi::AcpiRsdpStruct;
+
 use crate::graphics::Bitmap;
-use crate::result::Result;
+// use crate::result::Result;
 use crate::info;
+// use alloc::string::String;
 use core::mem::offset_of;
 use core::mem::size_of;
+use core::pin::Pin; 
 use core::ptr::null_mut;
 
 use core::marker::PhantomPinned; 
 
 
+
+
+const EFI_GRAPHICS_OUTPUT_PROTOCOL_GUID: EfiGuid = EfiGuid {
+    data0: 0x9042a9de,
+    data1: 0x23dc,
+    data2: 0x4a38,
+    data3: [0x96, 0xfb, 0x7a, 0xde, 0xd0, 0x80, 0x51, 0x6a],
+};
+
+const EFI_LOADED_IMAGE_PROTOCOL_GUID: EfiGuid = EfiGuid {
+    data0: 0x5B1B31A1,
+    data1: 0x9562,
+    data2: 0x11d2,
+    data3: [0x8E, 0x3F, 0x00, 0xA0, 0xC9, 0x69, 0x72, 0x3B],
+};
+
+const EFI_ACPI_TABLE_GUID: EfiGuid = EfiGuid {
+    data0: 0x8868e871,
+    data1: 0xe4f1,
+    data2: 0x11d3,
+    data3: [0xbc, 0x22, 0x00, 0x80, 0xc7, 0x3c, 0x88, 0x81],
+};
+
 type EfiVoid = u8;
 
 pub type EfiHandle = u64;
+
+
+#[repr(C)]
+#[derive(Debug)]
+pub struct EfiTableHeader {
+    pub signature: u64,
+    pub revision: u32,
+    pub header_size: u32,
+    pub crc32: u32,
+    reserved: u32,
+}
+
 
 
 #[derive(Debug, PartialEq, Eq, Copy, Clone)]
@@ -21,11 +64,78 @@ pub enum EfiStatus {
     Success = 0,
 }
 
+impl EfiStatus {
+    pub fn into_result(self) -> Result<()> {
+        if self == EfiStatus::Success {
+            Ok(())
+        } else {
+            Err(self.into())
+        }
+    }
+}
+
+
+pub union EfiBootServicesTableHandleProtocolVariants {
+    pub handle_loaded_image_protocol: extern "win64" fn(
+        handle: EfiHandle, 
+        protocol: &EfiGuid,
+        interface: *mut Option<Pin<&EfiLoadedImageProtocol>>,
+    ) -> EfiStatus,
+  /*  pub handle_simple_file_system_protocol: extern "win64" fn(
+        handle: EfiHandle,
+        protocol: *const EfiGuid,
+        interface: *mut Option<Pin<&EfiSimpleFileSystemProtocol>>,
+    ) -> EfiStatus, */
+}
+
+
+
+
+#[allow(dead_code)] 
+#[repr(usize)]
+pub enum AllocType {
+    AnyPages = 0,
+    MaxAddress,
+    Address,
+}
+
+#[allow(dead_code)]
+#[repr(u32)]
+pub enum MemoryType {
+    Reserved = 0,
+    LoaderCode,
+    LoaderData,
+    BootServicesCode,
+    BootServicesData,
+    RuntimeServicesCode,
+    RuntimeServicesData,
+    ConventionalMemory,
+    UnusableMemory,
+    ACPIReclaimMemory,
+    ACPIMemoryNVS,
+    MemoryMappedIO,
+    MemmoryMappedIOPortSpace,
+    PalCode,
+    PersistentMemory,
+}
+
+
+
+
+        
 
 #[repr(C)]
 pub struct EfiBootServicesTable {
     //_reserved0: [u64; 40],
-    _reserved0: [u64; 7],
+    //_reserved0: [u64; 7],
+    _header: EfiTableHeader, 
+    _reserved0: [u64; 2],
+    allocate_pages: extern "win64" fn(
+        allocate_type: AllocType,
+        memory_type: MemoryType,
+        pages: usize, 
+        mem: &mut *mut u8,) -> EfiStatus, 
+    _reserved1: [u64; 1], 
     get_memory_map: extern "win64" fn(
         memory_map_size: *mut usize,
         memory_map: *mut u8,
@@ -35,12 +145,13 @@ pub struct EfiBootServicesTable {
     //_reserved1: [u64; 32],
     //_reserved1: [u64; 21],
     _reserved2: [u64;11],
-    handle_protocol: extern "win64" fn(
-        handle: EfiHandle,
-        protocol: *const EfiGuid,
-        interface: *mut *mut EfiVoid,
-        ) -> EfiStatus,
-    _reserved1: [u64; 9],
+    handle_protocol: EfiBootServicesTableHandleProtocolVariants,
+    // handle_protocol: extern "win64" fn(
+    //     handle: EfiHandle,
+    //     protocol: *const EfiGuid,
+    //     interface: *mut *mut EfiVoid,
+    //     ) -> EfiStatus,
+    _reserved3: [u64; 9],
     exit_boot_services: extern "win64" fn(
         image_handle: EfiHandle, 
         map_key: usize) -> EfiStatus,
@@ -52,6 +163,7 @@ pub struct EfiBootServicesTable {
     _pinned: PhantomPinned,
 }
 impl EfiBootServicesTable {
+
     pub fn get_memory_map(&self, map: &mut MemoryMapHolder) -> EfiStatus {
         (self.get_memory_map)(
             &mut map.memory_map_size,
@@ -60,6 +172,23 @@ impl EfiBootServicesTable {
             &mut map.descriptor_size,
             &mut map.descriptor_version,
         )
+    }
+    pub fn handle_loaded_image_protocol(
+        &self,
+        image_handle: EfiHandle,
+    ) -> Result<Pin<&'static EfiLoadedImageProtocol>> {
+        let mut loaded_image_protocol = None;
+        let handle_protocol = &self.handle_protocol;
+        let status = unsafe {
+            (handle_protocol.handle_loaded_image_protocol)(
+                image_handle,
+                &EFI_LOADED_IMAGE_PROTOCOL_GUID,
+                &mut loaded_image_protocol,
+                )
+        };
+        status.into_result()?;
+        loaded_image_protocol
+            .ok_or(Error::Failed("hoge"))
     }
 }
 
@@ -75,19 +204,46 @@ pub struct EfiConfigurationTable {
     pub vendor_table: *const u8,
 }
 
+pub struct EfiSimpleTextOutputProtocol {
+    reset: EfiHandle,
+    output_string: extern "win64" 
+        fn(this: *const EfiSimpleTextOutputProtocol, str: *const u16) -> EfiStatus,
+    test_string: EfiHandle,
+    set_mode: EfiHandle,
+    set_attribute: EfiHandle,
+    clear_screen: extern "win64" 
+        fn(thins: *const EfiSimpleTextOutputProtocol) -> EfiStatus,
+    //
+    _pinned: PhantomPinned
+} 
+
 
 #[repr(C)]
 pub struct EfiSystemTable {
-    _reserved0: [u64; 12],
-    boot_services: &'static EfiBootServicesTable,
+    //_reserved0: [u64; 12],
+    header: EfiTableHeader,
+    firmware_vendor: EfiHandle,
+    firmware_revision: u32, 
+    console_in_handle: EfiHandle,
+    con_in: EfiHandle,
+    console_out_Handle: EfiHandle,
+    con_out: Pin<&'static EfiSimpleTextOutputProtocol>,
+    standart_error_handle: EfiHandle,
+    std_err: EfiHandle,
+    runtime_services: EfiHandle, 
+    boot_services: Pin<&'static EfiBootServicesTable>, 
     number_of_table_entries: usize,
     configuration_table: *const EfiConfigurationTable,
+    _pinned: PhantomPinned, 
 }
 
-const _: () = assert!(offset_of!(EfiSystemTable, boot_services) == 96);
+//const _: () = assert!(offset_of!(EfiSystemTable, boot_services) == 96);
 
 impl EfiSystemTable {
-    pub fn boot_serveces(&self) -> &EfiBootServicesTable {
+    pub fn con_out(&self) -> Pin<&EfiSimpleTextOutputProtocol> {
+        self.con_out
+    }
+    pub fn boot_services(&self) -> Pin<&EfiBootServicesTable> {
         self.boot_services
     }
     fn lookup_config_table(
@@ -108,12 +264,6 @@ impl EfiSystemTable {
     }
 }
 
-const EFI_GRAPHICS_OUTPUT_PROTOCOL_GUID: EfiGuid = EfiGuid {
-    data0: 0x9042a9de,
-    data1: 0x23dc,
-    data2: 0x4a38,
-    data3: [0x96, 0xfb, 0x7a, 0xde, 0xd0, 0x80, 0x51, 0x6a],
-};
 
 #[repr(C)]
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
@@ -124,19 +274,6 @@ struct EfiGuid {
     pub data3: [u8; 8],
 }
 
-const EFI_LOADED_IMAGE_PROTOCOL_GUID: EfiGuid = EfiGuid {
-    data0: 0x5B1B31A1,
-    data1: 0x9562,
-    data2: 0x11d2,
-    data3: [0x8E, 0x3F, 0x00, 0xA0, 0xC9, 0x69, 0x72, 0x3B],
-};
-
-const EFI_ACPI_TABLE_GUID: EfiGuid = EfiGuid {
-    data0: 0x8868e871,
-    data1: 0xe4f1,
-    data2: 0x11d3,
-    data3: [0xbc, 0x22, 0x00, 0x80, 0xc7, 0x3c, 0x88, 0x81],
-};
 
 
 
@@ -179,17 +316,24 @@ fn locate_graphic_protocol<'a>(efi_system_table: &EfiSystemTable,)
         &mut graphic_output_protocol as *mut *mut EfiGraphicsOutputProtocol as *mut *mut EfiVoid,
     );
     if status != EfiStatus::Success {
-        return Err("Failed to locate graphics output protocol");
+        return Err("Failed to locate graphics output protocol".into());
     }
     Ok(unsafe { &*graphic_output_protocol })
 }
 
+#[repr(C)] 
+#[derive(Debug)]
 pub struct EfiLoadedImageProtocol {
-    _reserved: [u64; 8],
+    _reserved0: [u64; 3],
+    pub device_handle: EfiHandle, 
+    _reserved1: [u64; 4], 
     pub image_base: u64,
     pub image_size: u64,
+    _pinned: PhantomPinned, 
 }
+const _: () = assert!(offset_of!(EfiLoadedImageProtocol, device_handle) == 24);
 
+/* 
 pub fn locate_loaded_image_protocol(
     image_handle: EfiHandle,
     efi_system_table: &EfiSystemTable,
@@ -206,7 +350,7 @@ pub fn locate_loaded_image_protocol(
     }
     Ok(unsafe {&*loaded_image_protocol })
 }
-
+*/
 
 
 
@@ -336,14 +480,17 @@ pub fn init_vram(efi_system_table: &EfiSystemTable) -> Result<VramBufferInfo> {
     
 pub fn exit_from_efi_boot_services(
     image_handle: EfiHandle,
-    efi_system_table: &EfiSystemTable,
+    efi_system_table: Pin<&EfiSystemTable>,
     memory_map: &mut MemoryMapHolder,
     ) {
     loop {
-        let status = efi_system_table.boot_services.get_memory_map(memory_map);
+        let status = efi_system_table
+            .as_ref()
+            .boot_services
+            .get_memory_map(memory_map);
         assert_eq!(status, EfiStatus::Success);
         info!("get_memory_map" ); 
-        let status = (efi_system_table.boot_services.exit_boot_services)(
+        let status = (efi_system_table.as_ref().boot_services.exit_boot_services)(
             image_handle,
             memory_map.map_key,
             );

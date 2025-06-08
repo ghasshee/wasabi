@@ -12,6 +12,7 @@ use crate::uefi::exit_from_efi_boot_services;
 use crate::uefi::EfiHandle;
 use crate::uefi::EfiMemoryType; 
 use crate::uefi::EfiMemoryType::*;
+use crate::uefi::EfiLoadedImageProtocol;
 use crate::uefi::EfiSystemTable;
 use crate::uefi::MemoryMapHolder;
 use crate::uefi::VramBufferInfo; 
@@ -21,10 +22,31 @@ use crate::x86::PAGE_SIZE;
 use crate::x86::PML4;
 use alloc::boxed::Box;
 use core::cmp::max;
+use core::pin::Pin;
+
+
+pub struct EfiServices {
+    image_handle: EfiHandle,
+    efi_system_table: Pin<&'static EfiSystemTable>,
+}
+
+impl EfiServices {
+    fn new(h: EfiHandle, tbl: Pin<&'static EfiSystemTable>) -> Self {
+        Self { image_handle:h, efi_system_table:tbl, } 
+    } 
+    fn get_loaded_image_protocol(&self) 
+    -> Pin<&'static EfiLoadedImageProtocol> {
+        let boot_services = self.efi_system_table.boot_services();
+        boot_services
+            .handle_loaded_image_protocol(self.image_handle)
+            .expect("Failed to get Loaded Image Protocol") 
+    } 
+}
+
 
 pub fn init_basic_runtime(
     image_handle: EfiHandle,
-    efi_system_table: &EfiSystemTable,
+    efi_system_table: Pin<&EfiSystemTable>,
     ) -> MemoryMapHolder  {
     let mut memory_map = MemoryMapHolder::new();
     info!("[DEBUG]: memory_map created");

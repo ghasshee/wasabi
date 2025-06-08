@@ -12,6 +12,7 @@ pub mod allocator;
 pub mod executor; 
 pub mod graphics;
 pub mod hpet;
+pub mod error;
 pub mod init;
 pub mod mutex; 
 pub mod print;

@@ -4,6 +4,7 @@
 
 use core::panic::PanicInfo;
 use core::time::Duration;
+use core::pin::Pin;
 
 use wasabi::executor::Executor;
 use wasabi::executor::Task;
@@ -23,7 +24,7 @@ use wasabi::qemu::exit_qemu;
 use wasabi::qemu::QemuExitCode;
 use wasabi::serial::SerialPort;
 use wasabi::uefi::init_vram;
-use wasabi::uefi::locate_loaded_image_protocol;
+//use wasabi::uefi::locate_loaded_image_protocol;
 use wasabi::uefi::EfiHandle;
 use wasabi::uefi::EfiSystemTable;
 use wasabi::x86::flush_tlb;
@@ -31,27 +32,28 @@ use wasabi::x86::init_exceptions;
 use wasabi::x86::read_cr0;
 
 
+
 use wasabi::graphics::draw_point;
 
 
 
 #[no_mangle]
-fn efi_main(image_handle: EfiHandle, efi_system_table: &EfiSystemTable) {
+fn efi_main(image_handle: EfiHandle, efi_system_table: Pin<&EfiSystemTable>) {
     println!("Booting WasabiOS...");
     println!("image_handle: {:#018X}", image_handle);
     println!("efi_system_table: {:#p}", efi_system_table);
-    let loaded_image_protocol = 
-        locate_loaded_image_protocol(image_handle, efi_system_table)
-            .expect("Failed to get LoadedImageProtocol");
-    println!("image_base: {:#018X}", loaded_image_protocol.image_base);
-    println!("image_size: {:#018X}", loaded_image_protocol.image_size);
-    hexdump(efi_system_table);
+    //let loaded_image_protocol = 
+    //    locate_loaded_image_protocol(image_handle, &efi_system_table)
+    //        .expect("Failed to get LoadedImageProtocol");
+    //println!("image_base: {:#018X}", loaded_image_protocol.image_base);
+    //println!("image_size: {:#018X}", loaded_image_protocol.image_size);
+    hexdump(&efi_system_table);
 
-    let mut vram = init_vram(efi_system_table).expect("init_vram failed");
+    let mut vram = init_vram(&efi_system_table).expect("init_vram failed");
 
     init_display(&mut vram); 
 
-
+/*
     let font_a = "
 ........
 ...**...
@@ -80,13 +82,13 @@ fn efi_main(image_handle: EfiHandle, efi_system_table: &EfiSystemTable) {
             let _ = draw_point(&mut vram, color, x as i64, y as i64);
         }
     }
-
+*/
 
 
     set_global_vram(vram); 
     info!("Hello, VRAM!");
 
-    let acpi = efi_system_table.acpi_table().expect("ACPI table not found");
+    let acpi = &efi_system_table.acpi_table().expect("ACPI table not found");
 
     info!("Hello, ACPI Table!"); 
 
