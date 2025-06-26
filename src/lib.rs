@@ -15,6 +15,7 @@ pub mod hpet;
 pub mod error;
 pub mod init;
 pub mod mutex; 
+pub mod pci;
 pub mod print;
 pub mod qemu;
 pub mod result; 
