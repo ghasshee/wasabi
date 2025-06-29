@@ -24,12 +24,12 @@ efi_system_table: 0x000000007f9ee018
 [INFO]  src/init.rs:109: EfiMemoryDescriptor { memory_type: CONVENTIONAL_MEMORY, physical_start: 2119258112, virtual_start: 0, number_of_pages: 3, attribute: 15 }
 [INFO]  src/init.rs:109: EfiMemoryDescriptor { memory_type: CONVENTIONAL_MEMORY, physical_start: 2145386496, virtual_start: 0, number_of_pages: 154, attribute: 15 }
 [INFO]  src/init.rs:109: EfiMemoryDescriptor { memory_type: CONVENTIONAL_MEMORY, physical_start: 4294967296, virtual_start: 0, number_of_pages: 262144, attribute: 15 }
-[INFO]  src/init.rs:109: EfiMemoryDescriptor { memory_type: CONVENTIONAL_MEMORY, physical_start: 5369245696, virtual_start: 0, number_of_pages: 262013, attribute: 15 }
-[INFO]  src/init.rs:112: Total: 1037700 pages = 4053 MiB
-[INFO]  src/x86.rs:799: TSS64 created @ 0x17FF8FEA0
-[INFO]  src/x86.rs:884: Loading GDT @ 0x000000017FF8FE40
-[INFO]  src/x86.rs:890: Loading TSS ( selector = 0x18 )
-[INFO]  src/x86.rs:745: Loading IDT: IdtrParameters { limit: 4096, base: 0x17ff8ee20 }
+[INFO]  src/init.rs:109: EfiMemoryDescriptor { memory_type: CONVENTIONAL_MEMORY, physical_start: 5369241600, virtual_start: 0, number_of_pages: 262014, attribute: 15 }
+[INFO]  src/init.rs:112: Total: 1037701 pages = 4053 MiB
+[INFO]  src/x86.rs:825: TSS64 created @ 0x17FF8FEA0
+[INFO]  src/x86.rs:910: Loading GDT @ 0x000000017FF8FE40
+[INFO]  src/x86.rs:916: Loading TSS ( selector = 0x18 )
+[INFO]  src/x86.rs:771: Loading IDT: IdtrParameters { limit: 4096, base: 0x17ff8ee20 }
 [INFO]  src/main.rs:106: Just before write to CR3
 [INFO]  src/main.rs:107: CR0 : 0000000000000000000000000000000001111111110000000001000000000000
 [INFO]  src/main.rs:111: Now we are using our own page tables!
@@ -47,13 +47,14 @@ efi_system_table: 0x000000007f9ee018
 [INFO]  src/init.rs:97 : HPET is at 0x00000000fed00000
 [INFO]  src/executor.rs:184: Starting global executor loop
 [INFO]  src/executor.rs:102: Executor starts running...
-[INFO]  src/main.rs:127: 100 hpet.main_conter = 6.68851ms
-[INFO]  src/main.rs:135: 200 hpet.main_conter = 10.82009ms
+[INFO]  src/main.rs:127: 100 hpet.main_conter = 6.9553ms
+[INFO]  src/main.rs:135: 200 hpet.main_conter = 11.32777ms
 [INFO]  src/main.rs:149: Started to monitor serial port
-[INFO]  src/main.rs:127: 101 hpet.main_conter = 1.0104458s
-[INFO]  src/main.rs:127: 102 hpet.main_conter = 2.01271036s
-[INFO]  src/main.rs:135: 201 hpet.main_conter = 2.01507739s
-[INFO]  src/main.rs:127: 103 hpet.main_conter = 3.0150725s
-[INFO]  src/main.rs:135: 202 hpet.main_conter = 4.01698871s
+[INFO]  src/main.rs:127: 101 hpet.main_conter = 1.01094209s
+[INFO]  src/main.rs:127: 102 hpet.main_conter = 2.01312306s
+[INFO]  src/main.rs:135: 201 hpet.main_conter = 2.01537923s
+[INFO]  src/main.rs:127: 103 hpet.main_conter = 3.01535027s
 [INFO]  src/executor.rs:111: Task completed: Task(src/main.rs:162): Ok(())
-[INFO]  src/main.rs:153: serial input: 0x1B = Some('\u{1b}')
+[INFO]  src/main.rs:135: 202 hpet.main_conter = 4.0212357s
+[INFO]  src/main.rs:135: 203 hpet.main_conter = 6.02318981s
+[INFO]  src/executor.rs:111: Task completed: Task(src/main.rs:163): Ok(())
