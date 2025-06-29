@@ -2,59 +2,58 @@
 BdsDxe: loading Boot0002 "UEFI QEMU HARDDISK QM00001 " from PciRoot(0x0)/Pci(0x1F,0x2)/Sata(0x0,0xFFFF,0x0)
 BdsDxe: starting Boot0002 "UEFI QEMU HARDDISK QM00001 " from PciRoot(0x0)/Pci(0x1F,0x2)/Sata(0x0,0xFFFF,0x0)
 Booting WasabiOS...
-image_handle: 0x000000007E31B718
+image_handle: 0x000000007EBC5B18
 efi_system_table: 0x000000007f9ee018
 00000000: 18 E0 9E 7F 00 00 00 00                         |.......|
-[INFO]  src/main.rs:90 : Hello, VRAM!
-[INFO]  src/main.rs:94 : Hello, ACPI Table!
+[INFO]  src/main.rs:91 : Hello, VRAM!
+[INFO]  src/main.rs:95 : Hello, ACPI Table!
 [INFO]  src/init.rs:53 : [DEBUG]: memory_map created
 [INFO]  src/uefi.rs:492: get_memory_map
 [INFO]  src/uefi.rs:497: exit_boot_services DONE
 [INFO]  src/uefi.rs:499: EfiStatus == Success; Just breaking the uefi exit loop
 [INFO]  src/init.rs:59 : [DEBUG]: exit_from_efi_boot_services DONE
 [INFO]  src/init.rs:61 : [DEBUG]: init_with_mmap DONE)
-[INFO]  src/main.rs:98 : Hello, Non-UEFI world!
-[INFO]  src/main.rs:99 : CR0 : 0000000000000000000000000000000001111111110000000001000000000000
+[INFO]  src/main.rs:99 : Hello, Non-UEFI world!
+[INFO]  src/main.rs:100: CR0 : 0000000000000000000000000000000001111111110000000001000000000000
 [INFO]  src/init.rs:109: EfiMemoryDescriptor { memory_type: CONVENTIONAL_MEMORY, physical_start: 4096, virtual_start: 0, number_of_pages: 159, attribute: 15 }
 [INFO]  src/init.rs:109: EfiMemoryDescriptor { memory_type: CONVENTIONAL_MEMORY, physical_start: 1048576, virtual_start: 0, number_of_pages: 1792, attribute: 15 }
 [INFO]  src/init.rs:109: EfiMemoryDescriptor { memory_type: CONVENTIONAL_MEMORY, physical_start: 8421376, virtual_start: 0, number_of_pages: 3, attribute: 15 }
 [INFO]  src/init.rs:109: EfiMemoryDescriptor { memory_type: CONVENTIONAL_MEMORY, physical_start: 8437760, virtual_start: 0, number_of_pages: 4, attribute: 15 }
 [INFO]  src/init.rs:109: EfiMemoryDescriptor { memory_type: CONVENTIONAL_MEMORY, physical_start: 22020096, virtual_start: 0, number_of_pages: 502326, attribute: 15 }
-[INFO]  src/init.rs:109: EfiMemoryDescriptor { memory_type: CONVENTIONAL_MEMORY, physical_start: 2079678464, virtual_start: 0, number_of_pages: 9143, attribute: 15 }
-[INFO]  src/init.rs:109: EfiMemoryDescriptor { memory_type: CONVENTIONAL_MEMORY, physical_start: 2119413760, virtual_start: 0, number_of_pages: 1, attribute: 15 }
+[INFO]  src/init.rs:109: EfiMemoryDescriptor { memory_type: CONVENTIONAL_MEMORY, physical_start: 2079678464, virtual_start: 0, number_of_pages: 9102, attribute: 15 }
+[INFO]  src/init.rs:109: EfiMemoryDescriptor { memory_type: CONVENTIONAL_MEMORY, physical_start: 2119258112, virtual_start: 0, number_of_pages: 3, attribute: 15 }
 [INFO]  src/init.rs:109: EfiMemoryDescriptor { memory_type: CONVENTIONAL_MEMORY, physical_start: 2145386496, virtual_start: 0, number_of_pages: 154, attribute: 15 }
 [INFO]  src/init.rs:109: EfiMemoryDescriptor { memory_type: CONVENTIONAL_MEMORY, physical_start: 4294967296, virtual_start: 0, number_of_pages: 262144, attribute: 15 }
-[INFO]  src/init.rs:109: EfiMemoryDescriptor { memory_type: CONVENTIONAL_MEMORY, physical_start: 5369237504, virtual_start: 0, number_of_pages: 262015, attribute: 15 }
-[INFO]  src/init.rs:112: Total: 1037741 pages = 4053 MiB
+[INFO]  src/init.rs:109: EfiMemoryDescriptor { memory_type: CONVENTIONAL_MEMORY, physical_start: 5369245696, virtual_start: 0, number_of_pages: 262013, attribute: 15 }
+[INFO]  src/init.rs:112: Total: 1037700 pages = 4053 MiB
 [INFO]  src/x86.rs:799: TSS64 created @ 0x17FF8FEA0
 [INFO]  src/x86.rs:884: Loading GDT @ 0x000000017FF8FE40
 [INFO]  src/x86.rs:890: Loading TSS ( selector = 0x18 )
 [INFO]  src/x86.rs:745: Loading IDT: IdtrParameters { limit: 4096, base: 0x17ff8ee20 }
-[INFO]  src/main.rs:105: Just before write to CR3
-[INFO]  src/main.rs:106: CR0 : 0000000000000000000000000000000001111111110000000001000000000000
-[INFO]  src/main.rs:110: Now we are using our own page tables!
-[INFO]  src/main.rs:111: CR0 : 0000000000000000000000000000000101111111111110001101000000000000
-[INFO]  src/main.rs:114: Flushing TLB using CR3...
-[INFO]  src/main.rs:116: CR0 : 0000000000000000000000000000000101111111111110001101000000000000
+[INFO]  src/main.rs:106: Just before write to CR3
+[INFO]  src/main.rs:107: CR0 : 0000000000000000000000000000000001111111110000000001000000000000
+[INFO]  src/main.rs:111: Now we are using our own page tables!
+[INFO]  src/main.rs:112: CR0 : 0000000000000000000000000000000101111111111110001101000000000000
+[INFO]  src/main.rs:115: Flushing TLB using CR3...
+[INFO]  src/main.rs:117: CR0 : 0000000000000000000000000000000101111111111110001101000000000000
 [INFO]  src/init.rs:132: ECAM: Bus [0..=255] is mapped at 0xB0000000
 [INFO]  src/pci.rs:197: (vendor: 0x8086, device: 0x29C0)
 [INFO]  src/pci.rs:197: (vendor: 0x1234, device: 0x1111)
 [INFO]  src/pci.rs:197: (vendor: 0x8086, device: 0x10D3)
+[INFO]  src/pci.rs:197: (vendor: 0x1B36, device: 0x000D)
 [INFO]  src/pci.rs:197: (vendor: 0x8086, device: 0x2918)
 [INFO]  src/pci.rs:197: (vendor: 0x8086, device: 0x2922)
 [INFO]  src/pci.rs:197: (vendor: 0x8086, device: 0x2930)
 [INFO]  src/init.rs:97 : HPET is at 0x00000000fed00000
-[INFO]  src/executor.rs:101: Executor starts running...
-[INFO]  src/main.rs:126: 100 hpet.main_conter = 4.44555ms
-[INFO]  src/main.rs:134: 200 hpet.main_conter = 8.09775ms
-[INFO]  src/main.rs:148: Started to monitor serial port
-[INFO]  src/main.rs:126: 101 hpet.main_conter = 1.00776971s
-[INFO]  src/main.rs:126: 102 hpet.main_conter = 2.00994651s
-[INFO]  src/main.rs:134: 201 hpet.main_conter = 2.01218918s
-[INFO]  src/main.rs:126: 103 hpet.main_conter = 3.01220258s
-[INFO]  src/executor.rs:109: Task completed: Task(src/main.rs:124): Ok(())
-[INFO]  src/main.rs:134: 202 hpet.main_conter = 4.01826435s
-[INFO]  src/main.rs:134: 203 hpet.main_conter = 6.02030505s
-[INFO]  src/executor.rs:109: Task completed: Task(src/main.rs:132): Ok(())
-[INFO]  src/main.rs:152: serial input: 0x0D = Some('\r')
-[INFO]  src/main.rs:152: serial input: 0x1B = Some('\u{1b}')
+[INFO]  src/executor.rs:184: Starting global executor loop
+[INFO]  src/executor.rs:102: Executor starts running...
+[INFO]  src/main.rs:127: 100 hpet.main_conter = 6.68851ms
+[INFO]  src/main.rs:135: 200 hpet.main_conter = 10.82009ms
+[INFO]  src/main.rs:149: Started to monitor serial port
+[INFO]  src/main.rs:127: 101 hpet.main_conter = 1.0104458s
+[INFO]  src/main.rs:127: 102 hpet.main_conter = 2.01271036s
+[INFO]  src/main.rs:135: 201 hpet.main_conter = 2.01507739s
+[INFO]  src/main.rs:127: 103 hpet.main_conter = 3.0150725s
+[INFO]  src/main.rs:135: 202 hpet.main_conter = 4.01698871s
+[INFO]  src/executor.rs:111: Task completed: Task(src/main.rs:162): Ok(())
+[INFO]  src/main.rs:153: serial input: 0x1B = Some('\u{1b}')
